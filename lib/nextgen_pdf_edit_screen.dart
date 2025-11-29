@@ -79,20 +79,20 @@ class _OPdfEditScreenState extends State<NGPdfEditScreen> {
   /// Flag to check if the PDF page has been loaded.
   bool _isPageLoaded = false;
 
-  /// Controller to manage drawing annotations.
-  final DrawingController _drawingController = DrawingController();
+  // /// Controller to manage drawing annotations.
+  // final DrawingController _drawingController = DrawingController();
 
-  /// Controller to manage highlight annotations.
-  final HighlightController _highlightController = HighlightController();
+  // /// Controller to manage highlight annotations.
+  // final HighlightController _highlightController = HighlightController();
 
-  /// Controller to manage underline annotations.
-  final UnderlineController _underlineController = UnderlineController();
+  // /// Controller to manage underline annotations.
+  // final UnderlineController _underlineController = UnderlineController();
 
   /// Controller to manage text box annotations.
   final TextBoxController _textBoxController = TextBoxController();
 
-  /// Controller to manage image annotations.
-  final ImageController _imageController = ImageController();
+  // /// Controller to manage image annotations.
+  // final ImageController _imageController = ImageController();
 
   /// Controller to handle saving the PDF.
   final SavePdfController _savePdfController = SavePdfController();
@@ -128,11 +128,11 @@ class _OPdfEditScreenState extends State<NGPdfEditScreen> {
   @override
   void dispose() {
     // _pdfViewerController.dispose();
-    _drawingController.dispose();
-    _highlightController.dispose();
-    _underlineController.dispose();
+    // _drawingController.dispose();
+    // _highlightController.dispose();
+    // _underlineController.dispose();
     _textBoxController.dispose();
-    _imageController.dispose();
+    // _imageController.dispose();
     _savePdfController.dispose();
     _pdfViewerKey.currentState?.dispose();
     // _pdfViewerController.clearSelection();
@@ -179,15 +179,15 @@ class _OPdfEditScreenState extends State<NGPdfEditScreen> {
     }
   }
 
-  /// Opens a color picker and sets the drawing color.
-  selectColor() async {
-    Color selectedColor = await showColorPicker(
-      context,
-      _drawingController.getCurrentColor,
-    );
-    _drawingController.setColor(selectedColor);
-    setState(() {});
-  }
+  // /// Opens a color picker and sets the drawing color.
+  // selectColor() async {
+  //   Color selectedColor = await showColorPicker(
+  //     context,
+  //     _drawingController.getCurrentColor,
+  //   );
+  //   _drawingController.setColor(selectedColor);
+  //   setState(() {});
+  // }
 
   /// Pops the screen and returns the edited PDF file.
   popWithResult(File? file) {
@@ -240,24 +240,24 @@ class _OPdfEditScreenState extends State<NGPdfEditScreen> {
 
       _pdfViewerController.addAnnotation(displayAnnotation);
 
-      // Add the annotation to the appropriate controller (highlight or underline)
-      isHighlight
-          ? _highlightController.addAnnotation(
-            AnnotationAction(
-              displayAnnotation,
-              isHighlight ? AnnotationType.highlight : AnnotationType.underline,
-              pdfAnnotations,
-              isAdd: true,
-            ),
-          )
-          : _underlineController.addAnnotation(
-            AnnotationAction(
-              displayAnnotation,
-              isHighlight ? AnnotationType.highlight : AnnotationType.underline,
-              pdfAnnotations,
-              isAdd: true,
-            ),
-          );
+      // // Add the annotation to the appropriate controller (highlight or underline)
+      // isHighlight
+      //     ? _highlightController.addAnnotation(
+      //       AnnotationAction(
+      //         displayAnnotation,
+      //         isHighlight ? AnnotationType.highlight : AnnotationType.underline,
+      //         pdfAnnotations,
+      //         isAdd: true,
+      //       ),
+      //     )
+      //     : _underlineController.addAnnotation(
+      //       AnnotationAction(
+      //         displayAnnotation,
+      //         isHighlight ? AnnotationType.highlight : AnnotationType.underline,
+      //         pdfAnnotations,
+      //         isAdd: true,
+      //       ),
+      //     );
     }
   }
 
@@ -278,9 +278,9 @@ class _OPdfEditScreenState extends State<NGPdfEditScreen> {
 
       final codec = await ui.instantiateImageCodec(compressedBytes);
       final frame = await codec.getNextFrame();
-      final ui.Image image = frame.image;
+      //  final ui.Image image = frame.image;
 
-      _imageController.addImage(image);
+      //  _imageController.addImage(image);
       setState(() {});
     }
   }
@@ -307,16 +307,19 @@ class _OPdfEditScreenState extends State<NGPdfEditScreen> {
     // Determine which option to display based on the selected index
     switch (_selectedIndex) {
       case 0:
-        return drawOption(); // Drawing mode option
+        return textOption();
+      // return drawOption(); // Drawing mode option
+      // case 1:
+      // return drawOption();
+      //   return textOption(); // Text editing option
+      // case 2:
+      //   return highlightOption(); // Highlighting option
+      // case 3:
+      //   return underlineOption(); // Underlining option
+      // case 4:
+      //   return imageOption(); // Image insertion option
+      // case 5:
       case 1:
-        return textOption(); // Text editing option
-      case 2:
-        return highlightOption(); // Highlighting option
-      case 3:
-        return underlineOption(); // Underlining option
-      case 4:
-        return imageOption(); // Image insertion option
-      case 5:
         return editPage(); // Page editing option
       default:
         return Container(); // Default empty container if no option is selected
@@ -329,11 +332,11 @@ class _OPdfEditScreenState extends State<NGPdfEditScreen> {
     bool confirmReset = await _showResetConfirmation(context);
     if (confirmReset) {
       // ✅ Clear all changes made by various controllers
-      _drawingController.clearAllPages();
-      _imageController.clearAllPages();
+      // _drawingController.clearAllPages();
+      // _imageController.clearAllPages();
       _textBoxController.clearAllPages();
-      _highlightController.clearAllPages(_pdfViewerController);
-      _underlineController.clearAllPages(_pdfViewerController);
+      // _highlightController.clearAllPages(_pdfViewerController);
+      // _underlineController.clearAllPages(_pdfViewerController);
       setState(() {}); // Update the UI
     }
   }
@@ -436,19 +439,19 @@ class _OPdfEditScreenState extends State<NGPdfEditScreen> {
     }
 
     // Adjust controllers to handle the new page across various features
-    await _drawingController.adjustPages(index + 1, isAdd: true);
+    // await _drawingController.adjustPages(index + 1, isAdd: true);
     await _textBoxController.adjustPages(index + 1, isAdd: true);
-    await _imageController.adjustPages(index + 1, isAdd: true);
-    await _highlightController.adjustPages(
-      index + 1,
-      _pdfViewerController,
-      isAdd: true,
-    );
-    _underlineController.adjustPages(
-      index + 1,
-      _pdfViewerController,
-      isAdd: true,
-    );
+    // await _imageController.adjustPages(index + 1, isAdd: true);
+    // await _highlightController.adjustPages(
+    //   index + 1,
+    //   _pdfViewerController,
+    //   isAdd: true,
+    // );
+    // _underlineController.adjustPages(
+    //   index + 1,
+    //   _pdfViewerController,
+    //   isAdd: true,
+    // );
     _currentPage = 1; // Set to the first page after adding a new one
     setState(() {}); // Update the UI
   }
@@ -461,16 +464,16 @@ class _OPdfEditScreenState extends State<NGPdfEditScreen> {
     }
 
     // Adjust controllers to handle the removed page across various features
-    await _drawingController.adjustPages(index, isAdd: false);
+    //await _drawingController.adjustPages(index, isAdd: false);
     await _textBoxController.adjustPages(index, isAdd: false);
-    await _imageController.adjustPages(index, isAdd: false);
-    await _highlightController.adjustPages(
-      index,
-      _pdfViewerController,
-      isAdd: false,
-    );
-    _underlineController.adjustPages(index, _pdfViewerController, isAdd: false);
-    _currentPage = 1; // Reset to the first page after removing one
+    // await _imageController.adjustPages(index, isAdd: false);
+    // await _highlightController.adjustPages(
+    //   index,
+    //   _pdfViewerController,
+    //   isAdd: false,
+    // );
+    // _underlineController.adjustPages(index, _pdfViewerController, isAdd: false);
+    // _currentPage = 1; // Reset to the first page after removing one
     setState(() {}); // Update the UI
   }
 
@@ -700,11 +703,11 @@ class _OPdfEditScreenState extends State<NGPdfEditScreen> {
                         pdfFile: pdfFile,
                         totalPages: _totalPages,
                         context: context,
-                        drawingController: _drawingController,
-                        imageController: _imageController,
+                        // drawingController: _drawingController,
+                        // imageController: _imageController,
                         textBoxController: _textBoxController,
-                        highlightController: _highlightController,
-                        underlineController: _underlineController,
+                        // highlightController: _highlightController,
+                        // underlineController: _underlineController,
                         refresh: () {
                           setState(() {});
                         },
@@ -785,8 +788,8 @@ class _OPdfEditScreenState extends State<NGPdfEditScreen> {
                                           .count; // Update page count
                                   _isPageLoaded = true;
                                 });
-                                _highlightController.setPage(_currentPage);
-                                _underlineController.setPage(_currentPage);
+                                // _highlightController.setPage(_currentPage);
+                                // _underlineController.setPage(_currentPage);
                               },
                               onPageChanged: (details) {
                                 setState(() {
@@ -796,9 +799,9 @@ class _OPdfEditScreenState extends State<NGPdfEditScreen> {
                                   _isPageLoaded =
                                       false; // Reset page load state
                                 });
-                                _drawingController.setPage(_currentPage);
-                                _highlightController.setPage(_currentPage);
-                                _underlineController.setPage(_currentPage);
+                                // _drawingController.setPage(_currentPage);
+                                // _highlightController.setPage(_currentPage);
+                                // _underlineController.setPage(_currentPage);
                                 Future.delayed(
                                   const Duration(milliseconds: 400),
                                   () {
@@ -819,9 +822,9 @@ class _OPdfEditScreenState extends State<NGPdfEditScreen> {
                             child: IgnorePointer(
                               ignoring: _selectedIndex == -1,
                               child: DrawingCanvas(
-                                drawingController: _drawingController,
+                                //  drawingController: _drawingController,
                                 textBoxController: _textBoxController,
-                                imageController: _imageController,
+                                //imageController: _imageController,
                                 currentPage: _currentPage,
                                 selectedMode: selectedMode,
                                 callback: () {
@@ -832,18 +835,21 @@ class _OPdfEditScreenState extends State<NGPdfEditScreen> {
                           ),
                         ),
                         // Toggle visibility button: Hide or show content based on user interaction
-                        if (_drawingController.hasContent() ||
-                            _textBoxController.hasContent() ||
-                            _imageController.hasContent() ||
-                            _highlightController.hasContent() ||
-                            _underlineController.hasContent())
+                        if (
+                        //_drawingController.hasContent() ||
+                        _textBoxController.hasContent()
+                        // ||
+                        // _imageController.hasContent() ||
+                        // _highlightController.hasContent() ||
+                        // _underlineController.hasContent()
+                        )
                           Positioned(
                             right: 15,
                             bottom: 15,
                             child: GestureDetector(
                               onTapDown: (_) {
-                                _underlineController.hide(_pdfViewerController);
-                                _highlightController.hide(_pdfViewerController);
+                                // _underlineController.hide(_pdfViewerController);
+                                // _highlightController.hide(_pdfViewerController);
                                 setState(() {
                                   revertView = true; // Toggle visibility flag
                                 });
@@ -852,12 +858,12 @@ class _OPdfEditScreenState extends State<NGPdfEditScreen> {
                                 Future.delayed(
                                   const Duration(milliseconds: 100),
                                   () {
-                                    _underlineController.unhide(
-                                      _pdfViewerController,
-                                    );
-                                    _highlightController.unhide(
-                                      _pdfViewerController,
-                                    );
+                                    // _underlineController.unhide(
+                                    //   _pdfViewerController,
+                                    // );
+                                    // _highlightController.unhide(
+                                    //   _pdfViewerController,
+                                    // );
                                     setState(() {
                                       revertView =
                                           false; // Reset visibility flag
@@ -869,12 +875,12 @@ class _OPdfEditScreenState extends State<NGPdfEditScreen> {
                                 Future.delayed(
                                   const Duration(milliseconds: 100),
                                   () {
-                                    _underlineController.unhide(
-                                      _pdfViewerController,
-                                    );
-                                    _highlightController.unhide(
-                                      _pdfViewerController,
-                                    );
+                                    // _underlineController.unhide(
+                                    //   _pdfViewerController,
+                                    // );
+                                    // _highlightController.unhide(
+                                    //   _pdfViewerController,
+                                    // );
                                     setState(() {
                                       revertView =
                                           false; // Reset visibility flag
@@ -1086,40 +1092,40 @@ class _OPdfEditScreenState extends State<NGPdfEditScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          _buildUndoRedoButton(
-            icon: Icons.undo,
-            enabled: controller.hasContent(),
-            onPressed:
-                controller.hasContent()
-                    ? () {
-                      if (controller is HighlightController ||
-                          controller is UnderlineController) {
-                        controller.undo(pdfController!); // Undo for annotations
-                      } else {
-                        controller.undo(); // Undo for other controllers
-                      }
-                      setState(() {});
-                    }
-                    : null,
-            text: "Undo",
-          ),
-          _buildUndoRedoButton(
-            icon: Icons.redo,
-            enabled: controller.hasContent(isRedo: true),
-            onPressed:
-                controller.hasContent(isRedo: true)
-                    ? () {
-                      if (controller is HighlightController ||
-                          controller is UnderlineController) {
-                        controller.redo(pdfController!); // Redo for annotations
-                      } else {
-                        controller.redo(); // Redo for other controllers
-                      }
-                      setState(() {});
-                    }
-                    : null,
-            text: "Redo",
-          ),
+          // _buildUndoRedoButton(
+          //   icon: Icons.undo,
+          //   enabled: controller.hasContent(),
+          //   onPressed:
+          //       controller.hasContent()
+          //           ? () {
+          //             if (controller is HighlightController ||
+          //                 controller is UnderlineController) {
+          //               controller.undo(pdfController!); // Undo for annotations
+          //             } else {
+          //               controller.undo(); // Undo for other controllers
+          //             }
+          //             setState(() {});
+          //           }
+          //           : null,
+          //   text: "Undo",
+          // ),
+          // _buildUndoRedoButton(
+          //   icon: Icons.redo,
+          //   enabled: controller.hasContent(isRedo: true),
+          //   onPressed:
+          //       controller.hasContent(isRedo: true)
+          //           ? () {
+          //             if (controller is HighlightController ||
+          //                 controller is UnderlineController) {
+          //               controller.redo(pdfController!); // Redo for annotations
+          //             } else {
+          //               controller.redo(); // Redo for other controllers
+          //             }
+          //             setState(() {});
+          //           }
+          //           : null,
+          //   text: "Redo",
+          // ),
           _buildActionButton(
             onPressed: onAdd,
             icon: addIcon,
@@ -1137,30 +1143,30 @@ class _OPdfEditScreenState extends State<NGPdfEditScreen> {
             },
             text: "Done",
           ),
-          _buildUndoRedoButton(
-            icon: Icons.replay,
-            enabled: controller.hasClearContent(),
-            onPressed:
-                controller.hasClearContent()
-                    ? () async {
-                      if (await _showResetConfirmation(
-                        context,
-                        reset: false,
-                        modificationsType: selectedMode.name,
-                      )) {
-                        if (controller is HighlightController ||
-                            controller is UnderlineController) {
-                          controller.clear(pdfController!); // Clear annotations
-                        } else {
-                          controller.clear(); // Clear other controllers
-                        }
+          //_buildUndoRedoButton(
+          //   icon: Icons.replay,
+          //   enabled: controller.hasClearContent(),
+          //   onPressed:
+          //       controller.hasClearContent()
+          //           ? () async {
+          //             if (await _showResetConfirmation(
+          //               context,
+          //               reset: false,
+          //               modificationsType: selectedMode.name,
+          //             )) {
+          //               if (controller is HighlightController ||
+          //                   controller is UnderlineController) {
+          //                 controller.clear(pdfController!); // Clear annotations
+          //               } else {
+          //                 controller.clear(); // Clear other controllers
+          //               }
 
-                        setState(() {});
-                      }
-                    }
-                    : null,
-            text: "Clear",
-          ),
+          //               setState(() {});
+          //             }
+          //           }
+          //           : null,
+          //   text: "Clear",
+          // ),
         ],
       ),
     );
@@ -1222,18 +1228,18 @@ class _OPdfEditScreenState extends State<NGPdfEditScreen> {
     );
   }
 
-  // ✅ Draw Option
-  /// Option to add drawing on the PDF.
-  Widget drawOption() => buildOptionRow(
-    controller: _drawingController,
-    onAdd: () async {
-      await selectColor(); // Select the color for drawing
-    },
-    addIcon: Icons.draw, // Icon for drawing option
-    label: "Add Drawing", // Label for the option
-    centerBtnColor:
-        _drawingController.getCurrentColor, // Current color for the drawing
-  );
+  // // ✅ Draw Option
+  // /// Option to add drawing on the PDF.
+  // Widget drawOption() => buildOptionRow(
+  //   controller: _drawingController,
+  //   onAdd: () async {
+  //     await selectColor(); // Select the color for drawing
+  //   },
+  //   addIcon: Icons.draw, // Icon for drawing option
+  //   label: "Add Drawing", // Label for the option
+  //   centerBtnColor:
+  //       _drawingController.getCurrentColor, // Current color for the drawing
+  // );
 
   // ✅ Text Option
   /// Option to add text to the PDF.
@@ -1260,50 +1266,50 @@ class _OPdfEditScreenState extends State<NGPdfEditScreen> {
     label: "Add Text", // Label for the option
   );
 
-  // ✅ Highlight Option
-  /// Option to highlight text in the PDF.
-  Widget highlightOption() => buildOptionRow(
-    controller: _highlightController,
-    onAdd: () {
-      _annotateText(true); // Highlight text
-    },
-    addIcon: Icons.highlight, // Icon for highlight option
-    label: "Highlight", // Label for the option
-    pdfController:
-        _pdfViewerController, // Pass PdfViewerController for handling PDF
-    centerBtnColor:
-        isTextSelected
-            ? Colors.amber
-            : Colors.transparent, // Change color when text is selected
-  );
+  // // ✅ Highlight Option
+  // /// Option to highlight text in the PDF.
+  // Widget highlightOption() => buildOptionRow(
+  //   controller: _highlightController,
+  //   onAdd: () {
+  //     _annotateText(true); // Highlight text
+  //   },
+  //   addIcon: Icons.highlight, // Icon for highlight option
+  //   label: "Highlight", // Label for the option
+  //   pdfController:
+  //       _pdfViewerController, // Pass PdfViewerController for handling PDF
+  //   centerBtnColor:
+  //       isTextSelected
+  //           ? Colors.amber
+  //           : Colors.transparent, // Change color when text is selected
+  // );
 
-  // ✅ Underline Option with PdfViewerController
-  /// Option to underline text in the PDF.
-  Widget underlineOption() => buildOptionRow(
-    controller: _underlineController,
-    onAdd: () {
-      _annotateText(false); // Underline text
-    },
-    addIcon: Icons.format_underline, // Icon for underline option
-    label: "Underline", // Label for the option
-    pdfController:
-        _pdfViewerController, // Pass PdfViewerController for handling PDF
-    centerBtnColor:
-        isTextSelected
-            ? Colors.green
-            : Colors.transparent, // Change color when text is selected
-  );
+  // // ✅ Underline Option with PdfViewerController
+  // /// Option to underline text in the PDF.
+  // Widget underlineOption() => buildOptionRow(
+  //   controller: _underlineController,
+  //   onAdd: () {
+  //     _annotateText(false); // Underline text
+  //   },
+  //   addIcon: Icons.format_underline, // Icon for underline option
+  //   label: "Underline", // Label for the option
+  //   pdfController:
+  //       _pdfViewerController, // Pass PdfViewerController for handling PDF
+  //   centerBtnColor:
+  //       isTextSelected
+  //           ? Colors.green
+  //           : Colors.transparent, // Change color when text is selected
+  // );
 
-  // ✅ Image Option
-  /// Option to add an image to the PDF.
-  Widget imageOption() => buildOptionRow(
-    controller: _imageController,
-    onAdd: () async {
-      await _addImage(); // Trigger image addition
-    },
-    addIcon: Icons.add_photo_alternate_rounded, // Icon for image option
-    label: "Add Image", // Label for the option
-  );
+  // // ✅ Image Option
+  // /// Option to add an image to the PDF.
+  // Widget imageOption() => buildOptionRow(
+  //   controller: _imageController,
+  //   onAdd: () async {
+  //     await _addImage(); // Trigger image addition
+  //   },
+  //   addIcon: Icons.add_photo_alternate_rounded, // Icon for image option
+  //   label: "Add Image", // Label for the option
+  // );
 
   // ✅ Edit Page Option
   /// Option to edit the page (Add, Done, or Remove Page).
@@ -1443,11 +1449,11 @@ enum DrawingMode { none, drawing, text, image, highlight, underline, edit }
 
 /// A StatefulWidget that provides a canvas for drawing, text editing, and image manipulation
 class DrawingCanvas extends StatefulWidget {
-  final DrawingController
-  drawingController; // Controller to handle drawing actions
+  // final DrawingController
+  // drawingController; // Controller to handle drawing actions
   final TextBoxController
   textBoxController; // Controller to handle text box actions
-  final ImageController imageController; // Controller to handle image actions
+  // final ImageController imageController; // Controller to handle image actions
   final int currentPage; // The current page being edited
   final DrawingMode
   selectedMode; // The mode currently selected (e.g., drawing, text)
@@ -1455,9 +1461,9 @@ class DrawingCanvas extends StatefulWidget {
 
   const DrawingCanvas({
     super.key,
-    required this.drawingController,
+    //  required this.drawingController,
     required this.textBoxController,
-    required this.imageController,
+    // required this.imageController,
     required this.currentPage,
     required this.selectedMode,
     required this.callback,
@@ -1472,20 +1478,20 @@ class _DrawingCanvasState extends State<DrawingCanvas> {
   void initState() {
     super.initState();
     // Set up controllers for the current page
-    widget.drawingController.setPage(widget.currentPage);
+    // widget.drawingController.setPage(widget.currentPage);
     widget.textBoxController.setPage(widget.currentPage);
-    widget.imageController.setPage(widget.currentPage);
+    // widget.imageController.setPage(widget.currentPage);
 
     // Add listeners to update the canvas when changes occur in any controller
-    widget.drawingController.addListener(() {
-      setState(() {});
-    });
+    // widget.drawingController.addListener(() {
+    //   setState(() {});
+    // });
     widget.textBoxController.addListener(() {
       setState(() {});
     });
-    widget.imageController.addListener(() {
-      setState(() {});
-    });
+    // widget.imageController.addListener(() {
+    //   setState(() {});
+    // });
   }
 
   @override
@@ -1493,24 +1499,24 @@ class _DrawingCanvasState extends State<DrawingCanvas> {
     super.didUpdateWidget(oldWidget);
     // If the page changes, reset controllers for the new page
     if (oldWidget.currentPage != widget.currentPage) {
-      widget.drawingController.setPage(widget.currentPage);
+      //widget.drawingController.setPage(widget.currentPage);
       widget.textBoxController.setPage(widget.currentPage);
-      widget.imageController.setPage(widget.currentPage);
+      // widget.imageController.setPage(widget.currentPage);
     }
   }
 
   @override
   void dispose() {
     // Remove listeners when the widget is disposed
-    widget.drawingController.removeListener(() {
-      setState(() {});
-    });
+    // widget.drawingController.removeListener(() {
+    //   setState(() {});
+    // });
     widget.textBoxController.removeListener(() {
       setState(() {});
     });
-    widget.imageController.removeListener(() {
-      setState(() {});
-    });
+    // widget.imageController.removeListener(() {
+    //   setState(() {});
+    // });
     super.dispose();
   }
 
@@ -1519,14 +1525,14 @@ class _DrawingCanvasState extends State<DrawingCanvas> {
     return GestureDetector(
       // Gesture handling for drawing, text, and image interactions
       onPanStart: (details) {
-        if (widget.selectedMode == DrawingMode.drawing) {
-          widget.drawingController.startDraw(details.localPosition);
-        }
+        // if (widget.selectedMode == DrawingMode.drawing) {
+        //   widget.drawingController.startDraw(details.localPosition);
+        // }
       },
       onPanUpdate: (details) {
-        if (widget.selectedMode == DrawingMode.drawing) {
-          widget.drawingController.drawing(details.localPosition);
-        }
+        // if (widget.selectedMode == DrawingMode.drawing) {
+        //   widget.drawingController.drawing(details.localPosition);
+        // }
       },
       onPanEnd: (details) {
         if (widget.selectedMode == DrawingMode.drawing) {
@@ -1540,21 +1546,21 @@ class _DrawingCanvasState extends State<DrawingCanvas> {
       },
       child: Stack(
         children: [
-          // Display image boxes on the canvas
-          ...widget.imageController.getImageBoxes().map(_buildImageWidget),
-          // Drawing layer with ability to paint dynamically
-          IgnorePointer(
-            ignoring: widget.selectedMode != DrawingMode.drawing,
-            child: ClipRect(
-              child: RepaintBoundary(
-                key: widget.drawingController.painterKey,
-                child: CustomPaint(
-                  painter: DrawingPainter(controller: widget.drawingController),
-                  size: Size.infinite,
-                ),
-              ),
-            ),
-          ),
+          // // Display image boxes on the canvas
+          // ...widget.imageController.getImageBoxes().map(_buildImageWidget),
+          // // Drawing layer with ability to paint dynamically
+          // IgnorePointer(
+          //   ignoring: widget.selectedMode != DrawingMode.drawing,
+          //   child: ClipRect(
+          //     child: RepaintBoundary(
+          //       key: widget.drawingController.painterKey,
+          //       child: CustomPaint(
+          //         painter: DrawingPainter(controller: widget.drawingController),
+          //         size: Size.infinite,
+          //       ),
+          //     ),
+          //   ),
+          // ),
           // Display and manage text boxes
           ...widget.textBoxController.getTextBoxes().map((textBox) {
             return Positioned(
@@ -1669,88 +1675,88 @@ class _DrawingCanvasState extends State<DrawingCanvas> {
     );
   }
 
-  /// Builds and positions an image widget on the canvas
-  Positioned _buildImageWidget(ImageBox imageBox) {
-    return Positioned(
-      left: imageBox.position.dx,
-      top: imageBox.position.dy,
-      child: GestureDetector(
-        onPanUpdate: (details) {
-          if (widget.selectedMode == DrawingMode.image) {
-            setState(() {
-              // Drag to move the image
-              imageBox.position += details.delta;
-            });
-          }
-        },
-        child: Stack(
-          children: [
-            // Transform image (rotate, scale)
-            Transform(
-              transform:
-                  Matrix4.identity()
-                    ..translate(imageBox.width / 2, imageBox.height / 2)
-                    ..rotateZ(imageBox.rotation)
-                    ..translate(-imageBox.width / 2, -imageBox.height / 2),
-              alignment: Alignment.center,
-              child: Container(
-                width: imageBox.width + 2,
-                height: imageBox.height + 2,
-                margin: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.blue),
-                ),
-                child: CustomPaint(painter: ImagePainter(imageBox)),
-              ),
-            ),
-            // Cross Icon to remove image
-            if (widget.selectedMode == DrawingMode.image)
-              Positioned(
-                right: 0,
-                top: 0,
-                child: GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      widget.imageController.removeImage(imageBox);
-                    });
-                  },
-                  child: const CircleAvatar(
-                    backgroundColor: Colors.red,
-                    radius: 10,
-                    child: Icon(Icons.close, size: 12, color: Colors.white),
-                  ),
-                ),
-              ),
-            // Resize Icon at Bottom Right
-            if (widget.selectedMode == DrawingMode.image)
-              Positioned(
-                right: 0,
-                bottom: 0,
-                child: GestureDetector(
-                  onPanUpdate: (details) {
-                    setState(() {
-                      // Resize while maintaining aspect ratio
-                      double aspectRatio = imageBox.width / imageBox.height;
-                      double newWidth = imageBox.width + details.delta.dx;
-                      double newHeight = newWidth / aspectRatio;
+  // /// Builds and positions an image widget on the canvas
+  // Positioned _buildImageWidget(ImageBox imageBox) {
+  //   return Positioned(
+  //     left: imageBox.position.dx,
+  //     top: imageBox.position.dy,
+  //     child: GestureDetector(
+  //       onPanUpdate: (details) {
+  //         if (widget.selectedMode == DrawingMode.image) {
+  //           setState(() {
+  //             // Drag to move the image
+  //             imageBox.position += details.delta;
+  //           });
+  //         }
+  //       },
+  //       child: Stack(
+  //         children: [
+  //           // Transform image (rotate, scale)
+  //           Transform(
+  //             transform:
+  //                 Matrix4.identity()
+  //                   ..translate(imageBox.width / 2, imageBox.height / 2)
+  //                   ..rotateZ(imageBox.rotation)
+  //                   ..translate(-imageBox.width / 2, -imageBox.height / 2),
+  //             alignment: Alignment.center,
+  //             child: Container(
+  //               width: imageBox.width + 2,
+  //               height: imageBox.height + 2,
+  //               margin: const EdgeInsets.all(8),
+  //               decoration: BoxDecoration(
+  //                 border: Border.all(color: Colors.blue),
+  //               ),
+  //               child: CustomPaint(painter: ImagePainter(imageBox)),
+  //             ),
+  //           ),
+  //           // Cross Icon to remove image
+  //           if (widget.selectedMode == DrawingMode.image)
+  //             Positioned(
+  //               right: 0,
+  //               top: 0,
+  //               child: GestureDetector(
+  //                 onTap: () {
+  //                   setState(() {
+  //                     widget.imageController.removeImage(imageBox);
+  //                   });
+  //                 },
+  //                 child: const CircleAvatar(
+  //                   backgroundColor: Colors.red,
+  //                   radius: 10,
+  //                   child: Icon(Icons.close, size: 12, color: Colors.white),
+  //                 ),
+  //               ),
+  //             ),
+  //           // Resize Icon at Bottom Right
+  //           if (widget.selectedMode == DrawingMode.image)
+  //             Positioned(
+  //               right: 0,
+  //               bottom: 0,
+  //               child: GestureDetector(
+  //                 onPanUpdate: (details) {
+  //                   setState(() {
+  //                     // Resize while maintaining aspect ratio
+  //                     double aspectRatio = imageBox.width / imageBox.height;
+  //                     double newWidth = imageBox.width + details.delta.dx;
+  //                     double newHeight = newWidth / aspectRatio;
 
-                      // Prevent shrinking the image below a minimum size
-                      if (newWidth > 20 && newHeight > 20) {
-                        imageBox.width = newWidth;
-                        imageBox.height = newHeight;
-                      }
-                    });
-                  },
-                  child: const Icon(
-                    Icons.open_with,
-                    size: 18,
-                    color: Colors.blue,
-                  ),
-                ),
-              ),
-          ],
-        ),
-      ),
-    );
-  }
+  //                     // Prevent shrinking the image below a minimum size
+  //                     if (newWidth > 20 && newHeight > 20) {
+  //                       imageBox.width = newWidth;
+  //                       imageBox.height = newHeight;
+  //                     }
+  //                   });
+  //                 },
+  //                 child: const Icon(
+  //                   Icons.open_with,
+  //                   size: 18,
+  //                   color: Colors.blue,
+  //                 ),
+  //               ),
+  //             ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 }

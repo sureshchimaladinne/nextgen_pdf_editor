@@ -31,11 +31,11 @@ class SavePdfController extends ChangeNotifier {
     required File pdfFile,
     required int totalPages,
     required BuildContext context,
-    required DrawingController drawingController,
-    required ImageController imageController,
+    // required DrawingController drawingController,
+    // required ImageController imageController,
     required TextBoxController textBoxController,
-    required HighlightController highlightController,
-    required UnderlineController underlineController,
+    // required HighlightController highlightController,
+    // required UnderlineController underlineController,
     required Function refresh,
   }) async {
     if (isSaving) return;
@@ -45,11 +45,14 @@ class SavePdfController extends ChangeNotifier {
 
     try {
       // Early exit if nothing to save
-      if (!(drawingController.hasAnyContent() ||
-          imageController.hasAnyContent() ||
-          textBoxController.hasAnyContent() ||
-          highlightController.hasAnyContent() ||
-          underlineController.hasAnyContent())) {
+      if (!(
+      // drawingController.hasAnyContent() ||
+      //   imageController.hasAnyContent() ||
+      textBoxController.hasAnyContent()
+      // ||
+      // highlightController.hasAnyContent() ||
+      // underlineController.hasAnyContent()
+      )) {
         return Navigator.pop(context, pdfFile);
       }
 
@@ -87,11 +90,11 @@ class SavePdfController extends ChangeNotifier {
           batchStart,
           batchEnd,
           context,
-          drawingController,
-          imageController,
+          // drawingController,
+          // imageController,
           textBoxController,
-          highlightController,
-          underlineController,
+          // highlightController,
+          // underlineController,
         );
 
         if (batchModified) {
@@ -131,34 +134,36 @@ class SavePdfController extends ChangeNotifier {
     int batchStart,
     int batchEnd,
     BuildContext context,
-    DrawingController drawingController,
-    ImageController imageController,
+    // DrawingController drawingController,
+    // ImageController imageController,
     TextBoxController textBoxController,
-    HighlightController highlightController,
-    UnderlineController underlineController,
+    // HighlightController highlightController,
+    // UnderlineController underlineController,
   ) async {
     bool modified = false;
 
     for (int i = batchStart; i < batchEnd; i++) {
       pages.value = i + 1;
       notifyListeners();
-      drawingController.setPage(i + 1);
-      final hasDrawings =
-          (drawingController.getAllDrawing()[i + 1]?.isNotEmpty ?? false);
-      final hasImages =
-          (imageController.getAllImageBoxes()[i + 1]?.isNotEmpty ?? false);
+      // drawingController.setPage(i + 1);
+      // final hasDrawings =
+      //     (drawingController.getAllDrawing()[i + 1]?.isNotEmpty ?? false);
+      // final hasImages =
+      //     (imageController.getAllImageBoxes()[i + 1]?.isNotEmpty ?? false);
       final hasText =
           (textBoxController.getAllTextBoxes()[i + 1]?.isNotEmpty ?? false);
-      final hasHighlight =
-          (highlightController.getHighlightHistory[i + 1]?.isNotEmpty ?? false);
-      final hasUnderline =
-          (underlineController.getUnderlineHistory[i + 1]?.isNotEmpty ?? false);
+      // final hasHighlight =
+      //     (highlightController.getHighlightHistory[i + 1]?.isNotEmpty ?? false);
+      // final hasUnderline =
+      //     (underlineController.getUnderlineHistory[i + 1]?.isNotEmpty ?? false);
 
-      if (!(hasDrawings ||
-          hasImages ||
-          hasText ||
-          hasHighlight ||
-          hasUnderline)) {
+      if (!(
+      // hasDrawings ||
+      //   hasImages ||
+      hasText
+      // hasHighlight ||
+      // hasUnderline
+      )) {
         continue;
       }
       modified = true;
@@ -167,27 +172,27 @@ class SavePdfController extends ChangeNotifier {
       dev.log('Processing page ${i + 1}');
       await Future.delayed(const Duration(milliseconds: 50));
 
-      // Process annotations
-      if (hasUnderline || hasHighlight) {
-        await _processAnnotations(
-          page,
-          i,
-          highlightController,
-          underlineController,
-        );
-      }
+      // // Process annotations
+      // if (hasUnderline || hasHighlight) {
+      //   await _processAnnotations(
+      //     page,
+      //     i,
+      //     highlightController,
+      //     underlineController,
+      //   );
+      // }
 
       await Future.delayed(const Duration(milliseconds: 50));
 
-      // Process images
-      if (hasImages) {
-        await _processImages(page, i, context, imageController);
-      }
+      // // Process images
+      // if (hasImages) {
+      //   await _processImages(page, i, context, imageController);
+      // }
 
-      // Process drawings
-      if (hasDrawings) {
-        await _processDrawings(page, drawingController);
-      }
+      // // Process drawings
+      // if (hasDrawings) {
+      //   await _processDrawings(page, drawingController);
+      // }
 
       // Process text boxes
       if (hasText) {
@@ -197,129 +202,129 @@ class SavePdfController extends ChangeNotifier {
     return modified;
   }
 
-  /// Process highlight and underline annotations
-  Future<void> _processAnnotations(
-    PdfPage page,
-    int pageIndex,
-    HighlightController highlightController,
-    UnderlineController underlineController,
-  ) async {
-    // Add highlight annotations
-    final highlightActions =
-        highlightController.getHighlightHistory[pageIndex + 1];
-    if (highlightActions != null) {
-      for (AnnotationAction action in highlightActions) {
-        if (action.isAdd) {
-          for (int j = 0; j < action.pdfAnnotation.length; j++) {
-            page.annotations.add(action.pdfAnnotation[j]);
-          }
-        }
-      }
-    }
+  // /// Process highlight and underline annotations
+  // Future<void> _processAnnotations(
+  //   PdfPage page,
+  //   int pageIndex,
+  //   HighlightController highlightController,
+  //   UnderlineController underlineController,
+  // ) async {
+  //   // Add highlight annotations
+  //   final highlightActions =
+  //       highlightController.getHighlightHistory[pageIndex + 1];
+  //   if (highlightActions != null) {
+  //     for (AnnotationAction action in highlightActions) {
+  //       if (action.isAdd) {
+  //         for (int j = 0; j < action.pdfAnnotation.length; j++) {
+  //           page.annotations.add(action.pdfAnnotation[j]);
+  //         }
+  //       }
+  //     }
+  //   }
 
-    // Add underline annotations
-    final underlineActions =
-        underlineController.getUnderlineHistory[pageIndex + 1];
-    if (underlineActions != null) {
-      for (AnnotationAction action in underlineActions) {
-        if (action.isAdd) {
-          for (int j = 0; j < action.pdfAnnotation.length; j++) {
-            dev.log("Adding underline annotation on page ${pageIndex + 1}");
-            page.annotations.add(action.pdfAnnotation[j]);
-          }
-        }
-      }
-    }
-  }
+  //   // Add underline annotations
+  //   final underlineActions =
+  //       underlineController.getUnderlineHistory[pageIndex + 1];
+  //   if (underlineActions != null) {
+  //     for (AnnotationAction action in underlineActions) {
+  //       if (action.isAdd) {
+  //         for (int j = 0; j < action.pdfAnnotation.length; j++) {
+  //           dev.log("Adding underline annotation on page ${pageIndex + 1}");
+  //           page.annotations.add(action.pdfAnnotation[j]);
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
 
-  /// Process images with memory optimization
-  Future<void> _processImages(
-    PdfPage page,
-    int pageIndex,
-    BuildContext context,
-    ImageController imageController,
-  ) async {
-    final imageBoxes = imageController.getAllImageBoxes()[pageIndex + 1];
-    if (imageBoxes == null) return;
+  // /// Process images with memory optimization
+  // Future<void> _processImages(
+  //   PdfPage page,
+  //   int pageIndex,
+  //   BuildContext context,
+  //   ImageController imageController,
+  // ) async {
+  //   final imageBoxes = imageController.getAllImageBoxes()[pageIndex + 1];
+  //   if (imageBoxes == null) return;
 
-    for (var imageBox in imageBoxes) {
-      try {
-        dev.log(
-          "Adding image on page ${pageIndex + 1} at position ${imageBox.position}",
-        );
+  //   for (var imageBox in imageBoxes) {
+  //     try {
+  //       dev.log(
+  //         "Adding image on page ${pageIndex + 1} at position ${imageBox.position}",
+  //       );
 
-        // Convert image with optimization
-        final imgData = await _convertImageToUint8ListOptimized(imageBox.image);
+  //       // Convert image with optimization
+  //       final imgData = await _convertImageToUint8ListOptimized(imageBox.image);
 
-        final PdfImage pdfImage = await Isolate.run(() async {
-          return await processDrawingsIsolate(imgData);
-        });
+  //       final PdfImage pdfImage = await Isolate.run(() async {
+  //         return await processDrawingsIsolate(imgData);
+  //       });
 
-        final double scaleFactorX =
-            page.getClientSize().width / MediaQuery.of(context).size.width;
-        final double scaleFactorY =
-            page.getClientSize().height /
-            (MediaQuery.of(context).size.width * 1.414);
+  //       final double scaleFactorX =
+  //           page.getClientSize().width / MediaQuery.of(context).size.width;
+  //       final double scaleFactorY =
+  //           page.getClientSize().height /
+  //           (MediaQuery.of(context).size.width * 1.414);
 
-        double scaledX = imageBox.position.dx * scaleFactorX;
-        double scaledY = imageBox.position.dy * scaleFactorY;
-        double scaledWidth = imageBox.width * scaleFactorX;
-        double scaledHeight = imageBox.height * scaleFactorY;
+  //       double scaledX = imageBox.position.dx * scaleFactorX;
+  //       double scaledY = imageBox.position.dy * scaleFactorY;
+  //       double scaledWidth = imageBox.width * scaleFactorX;
+  //       double scaledHeight = imageBox.height * scaleFactorY;
 
-        page.graphics.save();
-        page.graphics.translateTransform(
-          scaledX + scaledWidth / 2,
-          scaledY + scaledHeight / 2,
-        );
-        page.graphics.rotateTransform(imageBox.rotation * (180 / pi));
+  //       page.graphics.save();
+  //       page.graphics.translateTransform(
+  //         scaledX + scaledWidth / 2,
+  //         scaledY + scaledHeight / 2,
+  //       );
+  //       page.graphics.rotateTransform(imageBox.rotation * (180 / pi));
 
-        page.graphics.drawImage(
-          pdfImage,
-          Rect.fromLTWH(
-            (-scaledWidth / 2) + 14,
-            (-scaledHeight / 2) + 14,
-            scaledWidth,
-            scaledHeight,
-          ),
-        );
+  //       page.graphics.drawImage(
+  //         pdfImage,
+  //         Rect.fromLTWH(
+  //           (-scaledWidth / 2) + 14,
+  //           (-scaledHeight / 2) + 14,
+  //           scaledWidth,
+  //           scaledHeight,
+  //         ),
+  //       );
 
-        page.graphics.restore();
-        dev.log('Image drawing completed on page ${pageIndex + 1}');
+  //       page.graphics.restore();
+  //       dev.log('Image drawing completed on page ${pageIndex + 1}');
 
-        // Allow garbage collection
-        await Future.delayed(Duration.zero);
-      } catch (e) {
-        dev.log('Error processing image on page ${pageIndex + 1}: $e');
-      }
-    }
-  }
+  //       // Allow garbage collection
+  //       await Future.delayed(Duration.zero);
+  //     } catch (e) {
+  //       dev.log('Error processing image on page ${pageIndex + 1}: $e');
+  //     }
+  //   }
+  // }
 
-  /// Process drawings
-  Future<void> _processDrawings(
-    PdfPage page,
-    DrawingController drawingController,
-  ) async {
-    try {
-      ByteData? imageData = await drawingController.getImageData();
-      if (imageData != null) {
-        var imageBytes = imageData.buffer.asUint8List();
-        final PdfImage image = await Isolate.run(() async {
-          return await processDrawingsIsolate(imageBytes);
-        });
-        final double pageWidth = page.getClientSize().width;
-        final double pageHeight = page.getClientSize().height;
+  // /// Process drawings
+  // Future<void> _processDrawings(
+  //   PdfPage page,
+  //   DrawingController drawingController,
+  // ) async {
+  //   try {
+  //     ByteData? imageData = await drawingController.getImageData();
+  //     if (imageData != null) {
+  //       var imageBytes = imageData.buffer.asUint8List();
+  //       final PdfImage image = await Isolate.run(() async {
+  //         return await processDrawingsIsolate(imageBytes);
+  //       });
+  //       final double pageWidth = page.getClientSize().width;
+  //       final double pageHeight = page.getClientSize().height;
 
-        page.graphics.drawImage(
-          image,
-          Rect.fromLTWH(0, 0, pageWidth, pageHeight),
-        );
+  //       page.graphics.drawImage(
+  //         image,
+  //         Rect.fromLTWH(0, 0, pageWidth, pageHeight),
+  //       );
 
-        imageData = null;
-      }
-    } catch (e) {
-      dev.log('Error processing drawing: $e');
-    }
-  }
+  //       imageData = null;
+  //     }
+  //   } catch (e) {
+  //     dev.log('Error processing drawing: $e');
+  //   }
+  // }
 
   /// Process text boxes
   Future<void> _processTextBoxes(

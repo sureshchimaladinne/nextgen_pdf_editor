@@ -1,4 +1,4 @@
-📄 nextgen_pdf_editor
+<!-- 📄 nextgen_pdf_editor
 
 A powerful Flutter PDF editor that enables you to draw, highlight, underline, add text or images, and save changes back to the PDF — all with an intuitive UI. Built on top of Syncfusion's PDF Viewer and PDF libraries, this editor is ideal for creating note-taking, document review, or annotation apps.
 
@@ -64,6 +64,6 @@ Here's a working example:
 
 ## Author
 
-👨‍💻 **Asint Inc**  
+<!-- 👨‍💻 **Asint Inc**  
 📧 linkedIn: https://www.linkedin.com/company/asint
-🌐 Website: https://asint.net/
+🌐 Website: https://asint.net/ --> -->
