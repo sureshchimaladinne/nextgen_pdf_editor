@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'nextgen_pdf_edit_screen.dart';
+import 'package:nextgen_pdf_editor/nextgen_pdf_edit_screen.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
@@ -23,7 +23,16 @@ class NGPdf {
     File? result = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => NextGenPdfEditorScreen(pdfFile: pdfFile),
+        builder:
+            (context) => NGPdfEditScreen(
+              pdfFile: pdfFile, // The PDF file to edit
+              draw: draw, // Option to allow drawing
+              text: text, // Option to allow text editing
+              highlight: highlight, // Option to allow highlighting
+              underline: underline, // Option to allow underlining
+              image: image, // Option to allow image editing
+              page: page, // Option to allow page navigation
+            ),
       ),
     );
     // Return the edited PDF file
