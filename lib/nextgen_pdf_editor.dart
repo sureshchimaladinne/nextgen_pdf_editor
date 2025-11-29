@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:nextgen_pdf_editor/nextgen_pdf_edit_screen.dart';
+import 'nextgen_pdf_edit_screen.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
@@ -22,7 +22,9 @@ class NGPdf {
     // Navigate to the PDF editor screen and wait for the result
     File? result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => NGPdfEditScreen(pdfFile: pdfFile)),
+      MaterialPageRoute(
+        builder: (_) => NextGenPdfEditorScreen(pdfFile: pdfFile),
+      ),
     );
     // Return the edited PDF file
     return result;

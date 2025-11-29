@@ -1755,217 +1755,352 @@
 //   }
 // }
 
-// lib/nextgen_pdf_edit_screen.dart
+// // lib/nextgen_pdf_edit_screen.dart
+// import 'dart:io';
+// import 'package:flutter/material.dart';
+// import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+// import 'controllers/text_box_controller.dart';
+
+// class NGPdfEditScreen extends StatefulWidget {
+//   final File pdfFile;
+//   final bool allowText;
+
+//   const NGPdfEditScreen({
+//     Key? key,
+//     required this.pdfFile,
+//     this.allowText = true,
+//   }) : super(key: key);
+
+//   @override
+//   State<NGPdfEditScreen> createState() => _NGPdfEditScreenState();
+// }
+
+// class _NGPdfEditScreenState extends State<NGPdfEditScreen> {
+//   final PdfViewerController _pdfViewerController = PdfViewerController();
+//   final TextBoxController _textBoxController = TextBoxController();
+
+//   /// FIX 1: Create ValueNotifier for rebuilds
+//   final ValueNotifier<int> _refresh = ValueNotifier(0);
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     _pdfViewerController.addListener(() {
+//       final page = _pdfViewerController.pageNumber;
+//       if (page != null) {
+//         _textBoxController.setPage(page);
+//         _refresh.value++;
+
+//         /// notify UI update
+//       }
+//     });
+//   }
+
+//   /// FIX 2: TAP on PDF to add new text
+//   Future<void> _onPdfTap(PdfGestureDetails details) async {
+//     if (!widget.allowText) return;
+
+//     final int page = details.pageNumber;
+//     final Offset position = details.pagePosition;
+//     if (page <= 0) return;
+
+//     final box = _textBoxController.addTextBoxAt(
+//       position,
+//       pageNumber: page,
+//       text: "New Text",
+//       fontSize: 16,
+//     );
+
+//     _refresh.value++;
+
+//     final updated = await _showTextEditDialog(box);
+
+//     if (updated != null) {
+//       _textBoxController.updateTextBox(
+//         box,
+//         text: updated['text'],
+//         fontSize: updated['fontSize'],
+//         color: updated['color'],
+//       );
+//     }
+
+//     _refresh.value++;
+//   }
+
+//   Future<Map<String, dynamic>?> _showTextEditDialog(TextBox box) {
+//     final controller = TextEditingController(text: box.text);
+
+//     double fontSize = box.fontSize;
+//     Color color = box.color ?? Colors.black;
+
+//     return showDialog(
+//       context: context,
+//       builder:
+//           (_) => AlertDialog(
+//             title: const Text("Edit Text"),
+//             content: Column(
+//               mainAxisSize: MainAxisSize.min,
+//               children: [
+//                 TextField(controller: controller),
+//                 const SizedBox(height: 12),
+//                 DropdownButton<double>(
+//                   value: fontSize,
+//                   items:
+//                       [12, 14, 16, 18, 20]
+//                           .map(
+//                             (e) => DropdownMenuItem(
+//                               value: e.toDouble(),
+//                               child: Text("$e"),
+//                             ),
+//                           )
+//                           .toList(),
+//                   onChanged: (v) => fontSize = v!,
+//                 ),
+//                 const SizedBox(height: 12),
+//                 GestureDetector(
+//                   onTap: () {
+//                     if (color == Colors.black)
+//                       color = Colors.red;
+//                     else if (color == Colors.red)
+//                       color = Colors.blue;
+//                     else
+//                       color = Colors.black;
+//                     setState(() {});
+//                   },
+//                   child: Container(width: 30, height: 30, color: color),
+//                 ),
+//               ],
+//             ),
+//             actions: [
+//               TextButton(
+//                 onPressed: () => Navigator.pop(context),
+//                 child: const Text("Cancel"),
+//               ),
+//               TextButton(
+//                 onPressed:
+//                     () => Navigator.pop(context, {
+//                       "text": controller.text,
+//                       "fontSize": fontSize,
+//                       "color": color,
+//                     }),
+//                 child: const Text("Save"),
+//               ),
+//             ],
+//           ),
+//     );
+//   }
+
+//   Widget _buildDraggableBox(TextBox box) {
+//     return Positioned(
+//       left: box.position.dx,
+//       top: box.position.dy,
+//       child: Draggable(
+//         feedback: Material(
+//           color: Colors.transparent,
+//           child: _box(box, dragging: true),
+//         ),
+//         child: GestureDetector(
+//           onLongPress: () async {
+//             final updated = await _showTextEditDialog(box);
+//             if (updated != null) {
+//               _textBoxController.updateTextBox(
+//                 box,
+//                 text: updated['text'],
+//                 fontSize: updated['fontSize'],
+//                 color: updated['color'],
+//               );
+//               _refresh.value++;
+//             }
+//           },
+//           child: _box(box),
+//         ),
+//         childWhenDragging: Container(),
+//         onDragEnd: (details) {
+//           final newPos = Offset(details.offset.dx, details.offset.dy - 80);
+//           _textBoxController.updateTextBox(box, position: newPos);
+//           _refresh.value++;
+//         },
+//       ),
+//     );
+//   }
+
+//   Widget _box(TextBox box, {bool dragging = false}) {
+//     return Container(
+//       padding: const EdgeInsets.all(4),
+//       decoration: BoxDecoration(
+//         color: dragging ? Colors.white : Colors.white70,
+//         border: Border.all(color: Colors.blue),
+//       ),
+//       child: Text(
+//         box.text,
+//         style: TextStyle(
+//           fontSize: box.fontSize,
+//           color: box.color ?? Colors.black,
+//         ),
+//       ),
+//     );
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(title: const Text("Edit PDF")),
+//       body: Stack(
+//         children: [
+//           SfPdfViewer.file(
+//             widget.pdfFile,
+//             controller: _pdfViewerController,
+//             onTap: _onPdfTap,
+//           ),
+
+//           /// FIX 3: Overlay textboxes
+//           ValueListenableBuilder(
+//             valueListenable: _refresh,
+//             builder: (_, __, ___) {
+//               final list =
+//                   _textBoxController.getAllTextBoxes()[_textBoxController
+//                       .currentPage] ??
+//                   [];
+//               return Stack(children: list.map(_buildDraggableBox).toList());
+//             },
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-import 'controllers/text_box_controller.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class NGPdfEditScreen extends StatefulWidget {
+class NextGenPdfEditorScreen extends StatefulWidget {
   final File pdfFile;
-  final bool allowText;
 
-  const NGPdfEditScreen({
-    Key? key,
-    required this.pdfFile,
-    this.allowText = true,
-  }) : super(key: key);
+  const NextGenPdfEditorScreen({super.key, required this.pdfFile});
 
   @override
-  State<NGPdfEditScreen> createState() => _NGPdfEditScreenState();
+  State<NextGenPdfEditorScreen> createState() => _NextGenPdfEditorScreenState();
 }
 
-class _NGPdfEditScreenState extends State<NGPdfEditScreen> {
-  final PdfViewerController _pdfViewerController = PdfViewerController();
-  final TextBoxController _textBoxController = TextBoxController();
+class _NextGenPdfEditorScreenState extends State<NextGenPdfEditorScreen> {
+  final PdfViewerController _viewerController = PdfViewerController();
+  File? updatedFile;
 
-  /// FIX 1: Create ValueNotifier for rebuilds
-  final ValueNotifier<int> _refresh = ValueNotifier(0);
+  List<_PlacedText> placedTexts = [];
 
-  @override
-  void initState() {
-    super.initState();
-    _pdfViewerController.addListener(() {
-      final page = _pdfViewerController.pageNumber;
-      if (page != null) {
-        _textBoxController.setPage(page);
-        _refresh.value++;
+  Future<void> _onTap(TapUpDetails details) async {
+    final text = await showDialog<String>(
+      context: context,
+      builder: (_) {
+        final c = TextEditingController();
+        return AlertDialog(
+          title: const Text("Add Text"),
+          content: TextField(
+            controller: c,
+            decoration: const InputDecoration(hintText: "Enter text"),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, c.text),
+              child: const Text("Add"),
+            ),
+          ],
+        );
+      },
+    );
 
-        /// notify UI update
-      }
+    if (text == null || text.trim().isEmpty) return;
+
+    setState(() {
+      placedTexts.add(
+        _PlacedText(
+          text: text,
+          x: details.localPosition.dx,
+          y: details.localPosition.dy,
+        ),
+      );
     });
   }
 
-  /// FIX 2: TAP on PDF to add new text
-  Future<void> _onPdfTap(PdfGestureDetails details) async {
-    if (!widget.allowText) return;
-
-    final int page = details.pageNumber;
-    final Offset position = details.pagePosition;
-    if (page <= 0) return;
-
-    final box = _textBoxController.addTextBoxAt(
-      position,
-      pageNumber: page,
-      text: "New Text",
-      fontSize: 16,
+  Future<void> _savePdf() async {
+    final document = PdfDocument(
+      inputBytes: await widget.pdfFile.readAsBytes(),
     );
 
-    _refresh.value++;
+    PdfPage page = document.pages[0];
 
-    final updated = await _showTextEditDialog(box);
+    final font = PdfStandardFont(PdfFontFamily.helvetica, 18);
 
-    if (updated != null) {
-      _textBoxController.updateTextBox(
-        box,
-        text: updated['text'],
-        fontSize: updated['fontSize'],
-        color: updated['color'],
+    for (var item in placedTexts) {
+      page.graphics.drawString(
+        item.text,
+        font,
+        bounds: Rect.fromLTWH(item.x, item.y, 200, 30),
       );
     }
 
-    _refresh.value++;
-  }
+    final bytes = await document.save();
+    document.dispose();
 
-  Future<Map<String, dynamic>?> _showTextEditDialog(TextBox box) {
-    final controller = TextEditingController(text: box.text);
-
-    double fontSize = box.fontSize;
-    Color color = box.color ?? Colors.black;
-
-    return showDialog(
-      context: context,
-      builder:
-          (_) => AlertDialog(
-            title: const Text("Edit Text"),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextField(controller: controller),
-                const SizedBox(height: 12),
-                DropdownButton<double>(
-                  value: fontSize,
-                  items:
-                      [12, 14, 16, 18, 20]
-                          .map(
-                            (e) => DropdownMenuItem(
-                              value: e.toDouble(),
-                              child: Text("$e"),
-                            ),
-                          )
-                          .toList(),
-                  onChanged: (v) => fontSize = v!,
-                ),
-                const SizedBox(height: 12),
-                GestureDetector(
-                  onTap: () {
-                    if (color == Colors.black)
-                      color = Colors.red;
-                    else if (color == Colors.red)
-                      color = Colors.blue;
-                    else
-                      color = Colors.black;
-                    setState(() {});
-                  },
-                  child: Container(width: 30, height: 30, color: color),
-                ),
-              ],
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text("Cancel"),
-              ),
-              TextButton(
-                onPressed:
-                    () => Navigator.pop(context, {
-                      "text": controller.text,
-                      "fontSize": fontSize,
-                      "color": color,
-                    }),
-                child: const Text("Save"),
-              ),
-            ],
-          ),
+    final dir = await getTemporaryDirectory();
+    final newFile = File(
+      "${dir.path}/edited_${DateTime.now().millisecondsSinceEpoch}.pdf",
     );
-  }
 
-  Widget _buildDraggableBox(TextBox box) {
-    return Positioned(
-      left: box.position.dx,
-      top: box.position.dy,
-      child: Draggable(
-        feedback: Material(
-          color: Colors.transparent,
-          child: _box(box, dragging: true),
-        ),
-        child: GestureDetector(
-          onLongPress: () async {
-            final updated = await _showTextEditDialog(box);
-            if (updated != null) {
-              _textBoxController.updateTextBox(
-                box,
-                text: updated['text'],
-                fontSize: updated['fontSize'],
-                color: updated['color'],
-              );
-              _refresh.value++;
-            }
-          },
-          child: _box(box),
-        ),
-        childWhenDragging: Container(),
-        onDragEnd: (details) {
-          final newPos = Offset(details.offset.dx, details.offset.dy - 80);
-          _textBoxController.updateTextBox(box, position: newPos);
-          _refresh.value++;
-        },
-      ),
-    );
-  }
+    await newFile.writeAsBytes(bytes);
 
-  Widget _box(TextBox box, {bool dragging = false}) {
-    return Container(
-      padding: const EdgeInsets.all(4),
-      decoration: BoxDecoration(
-        color: dragging ? Colors.white : Colors.white70,
-        border: Border.all(color: Colors.blue),
-      ),
-      child: Text(
-        box.text,
-        style: TextStyle(
-          fontSize: box.fontSize,
-          color: box.color ?? Colors.black,
-        ),
-      ),
-    );
+    // Save last file path
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString("last_pdf", newFile.path);
+
+    updatedFile = newFile;
+
+    Navigator.pop(context, newFile);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Edit PDF")),
-      body: Stack(
-        children: [
-          SfPdfViewer.file(
-            widget.pdfFile,
-            controller: _pdfViewerController,
-            onTap: _onPdfTap,
-          ),
-
-          /// FIX 3: Overlay textboxes
-          ValueListenableBuilder(
-            valueListenable: _refresh,
-            builder: (_, __, ___) {
-              final list =
-                  _textBoxController.getAllTextBoxes()[_textBoxController
-                      .currentPage] ??
-                  [];
-              return Stack(children: list.map(_buildDraggableBox).toList());
-            },
-          ),
+      appBar: AppBar(
+        title: const Text("PDF Editor"),
+        actions: [
+          IconButton(icon: const Icon(Icons.save), onPressed: _savePdf),
         ],
+      ),
+      body: GestureDetector(
+        onTapUp: _onTap,
+        child: Stack(
+          children: [
+            SfPdfViewer.file(widget.pdfFile),
+            ...placedTexts.map(
+              (e) => Positioned(
+                left: e.x,
+                top: e.y,
+                child: Text(
+                  e.text,
+                  style: const TextStyle(fontSize: 18, color: Colors.red),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
+}
+
+class _PlacedText {
+  final String text;
+  final double x;
+  final double y;
+
+  _PlacedText({required this.text, required this.x, required this.y});
 }
