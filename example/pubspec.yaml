@@ -1,0 +1,23 @@
+name: example
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: ^3.7.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  file_picker: ^9.0.2
+  syncfusion_flutter_pdfviewer: ^29.1.37
+  nextgen_pdf_editor:
+    path: ../
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
