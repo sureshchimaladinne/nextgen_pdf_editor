@@ -1384,22 +1384,22 @@ class _OPdfEditScreenState extends State<NGPdfEditScreen> {
               _selectedIndex = index; // Select the current item
             }
             switch (index) {
+              // case 0:
+              //   _changeMode(DrawingMode.drawing); // Set mode to drawing
+              //   break;
               case 0:
-                _changeMode(DrawingMode.drawing); // Set mode to drawing
-                break;
-              case 1:
                 _changeMode(DrawingMode.text); // Set mode to text
                 break;
-              case 2:
-                _changeMode(DrawingMode.highlight); // Set mode to highlight
-                break;
-              case 3:
-                _changeMode(DrawingMode.underline); // Set mode to underline
-                break;
-              case 4:
-                _changeMode(DrawingMode.image); // Set mode to image
-                break;
-              case 5:
+              // case 2:
+              //   _changeMode(DrawingMode.highlight); // Set mode to highlight
+              //   break;
+              // case 3:
+              //   _changeMode(DrawingMode.underline); // Set mode to underline
+              //   break;
+              // case 4:
+              //   _changeMode(DrawingMode.image); // Set mode to image
+              //   break;
+              case 1:
                 _changeMode(DrawingMode.edit); // Set mode to edit
                 break;
               default:
