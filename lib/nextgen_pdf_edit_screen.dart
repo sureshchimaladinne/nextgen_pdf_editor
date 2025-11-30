@@ -2674,7 +2674,7 @@ class _OPdfEditScreenState extends State<NGPdfEditScreen> {
 }
 
 /// Enum representing the different drawing modes for the canvas
-enum DrawingMode { none, drawing, text, image, highlight, underline, edit }
+enum DrawingMode { none, text }
 
 /// A StatefulWidget that provides a canvas for drawing, text editing, and image manipulation
 class DrawingCanvas extends StatefulWidget {
@@ -2746,11 +2746,11 @@ class _DrawingCanvasState extends State<DrawingCanvas> {
         //   widget.drawingController.drawing(details.localPosition);
         // }
       },
-      onPanEnd: (details) {
-        if (widget.selectedMode == DrawingMode.drawing) {
-          widget.callback();
-        }
-      },
+      // onPanEnd: (details) {
+      //   if (widget.selectedMode == DrawingMode.drawing) {
+      //     widget.callback();
+      //   }
+      // },
       onTapUp: (details) {
         if (widget.selectedMode == DrawingMode.text) {
           widget.textBoxController.selectTextBox(details.localPosition);
