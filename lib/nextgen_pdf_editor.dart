@@ -26,12 +26,12 @@ class NGPdf {
         builder:
             (context) => NGPdfEditScreen(
               pdfFile: pdfFile, // The PDF file to edit
-              draw: draw, // Option to allow drawing
+              //draw: draw, // Option to allow drawing
               text: text, // Option to allow text editing
-              highlight: highlight, // Option to allow highlighting
-              underline: underline, // Option to allow underlining
-              image: image, // Option to allow image editing
-              page: page, // Option to allow page navigation
+              // highlight: highlight, // Option to allow highlighting
+              // underline: underline, // Option to allow underlining
+              // image: image, // Option to allow image editing
+              // page: page, // Option to allow page navigation
             ),
       ),
     );
@@ -39,19 +39,18 @@ class NGPdf {
     return result;
   }
 
- static lauchPdf(File pdfFile) async {
+  static lauchPdf(File pdfFile) async {
     // Get the application's document directory
     final directory = await getApplicationDocumentsDirectory();
     // Create a new file path for the edited PDF
     final String savedPath =
         '${directory.path}/${pdfFile.path.split('/').last.split('.').first}_${DateTime.now().millisecondsSinceEpoch}.pdf';
-    
+
     // Save the edited PDF to the new file path
     await pdfFile.copy(savedPath);
-    
+
     // Optionally, open the saved PDF file (currently commented out)
     OpenFile.open(savedPath);
-
   }
 
   // Add text to an existing PDF

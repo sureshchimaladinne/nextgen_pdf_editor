@@ -24,33 +24,33 @@ class NGPdfEditScreen extends StatefulWidget {
   final File pdfFile;
 
   /// Whether the drawing functionality should be enabled.
-  final bool draw;
+  // final bool draw;
 
   /// Whether the text annotation functionality should be enabled.
   final bool text;
 
   /// Whether the highlight annotation functionality should be enabled.
-  final bool highlight;
+  //final bool highlight;
 
   /// Whether the underline annotation functionality should be enabled.
-  final bool underline;
+  //final bool underline;
 
   /// Whether the image addition functionality should be enabled.
-  final bool image;
+  //final bool image;
 
   /// Whether the page navigation functionality should be enabled.
-  final bool page;
+  //final bool page;
 
   /// Creates a new instance of [NGPdfEditScreen].
   const NGPdfEditScreen({
     super.key,
     required this.pdfFile,
-    required this.draw,
+    // required this.draw,
     required this.text,
-    required this.highlight,
-    required this.underline,
-    required this.image,
-    required this.page,
+    // required this.highlight,
+    // required this.underline,
+    // required this.image,
+    //required this.page,
   });
 
   @override
@@ -161,23 +161,23 @@ class _OPdfEditScreenState extends State<NGPdfEditScreen> {
     }
   }
 
-  /// Opens a color picker to select a color for annotations (highlight/underline).
-  Future<void> _selectAnnotationColor(bool isHighlight) async {
-    Color selectedColor = await showColorPicker(
-      context,
-      isHighlight ? _highlightColor : _underlineColor,
-    );
+  // /// Opens a color picker to select a color for annotations (highlight/underline).
+  // Future<void> _selectAnnotationColor(bool isHighlight) async {
+  //   Color selectedColor = await showColorPicker(
+  //     context,
+  //     isHighlight ? _highlightColor : _underlineColor,
+  //   );
 
-    if (selectedColor != null) {
-      setState(() {
-        if (isHighlight) {
-          _highlightColor = selectedColor;
-        } else {
-          _underlineColor = selectedColor;
-        }
-      });
-    }
-  }
+  //   if (selectedColor != null) {
+  //     setState(() {
+  //       if (isHighlight) {
+  //         _highlightColor = selectedColor;
+  //       } else {
+  //         _underlineColor = selectedColor;
+  //       }
+  //     });
+  //   }
+  // }
 
   // /// Opens a color picker and sets the drawing color.
   // selectColor() async {
@@ -194,113 +194,113 @@ class _OPdfEditScreenState extends State<NGPdfEditScreen> {
     Navigator.pop(context, file);
   }
 
-  /// Annotates the selected text with either highlight or underline.
-  Future<void> _annotateText(bool isHighlight) async {
-    List<PdfTextLine>? textLines =
-        _pdfViewerKey.currentState?.getSelectedTextLines();
-    if (textLines != null && textLines.isNotEmpty) {
-      List<PdfTextMarkupAnnotation> pdfAnnotations = [];
-      PdfColor selectedColor =
-          isHighlight
-              ? PdfColor(
-                _highlightColor.red,
-                _highlightColor.green,
-                _highlightColor.blue,
-              )
-              : PdfColor(
-                _underlineColor.red,
-                _underlineColor.green,
-                _underlineColor.blue,
-              );
+  // /// Annotates the selected text with either highlight or underline.
+  // Future<void> _annotateText(bool isHighlight) async {
+  //   List<PdfTextLine>? textLines =
+  //       _pdfViewerKey.currentState?.getSelectedTextLines();
+  //   if (textLines != null && textLines.isNotEmpty) {
+  //     List<PdfTextMarkupAnnotation> pdfAnnotations = [];
+  //     PdfColor selectedColor =
+  //         isHighlight
+  //             ? PdfColor(
+  //               _highlightColor.red,
+  //               _highlightColor.green,
+  //               _highlightColor.blue,
+  //             )
+  //             : PdfColor(
+  //               _underlineColor.red,
+  //               _underlineColor.green,
+  //               _underlineColor.blue,
+  //             );
 
-      for (var line in textLines) {
-        PdfTextMarkupAnnotation annotation = PdfTextMarkupAnnotation(
-          line.bounds,
-          line.text,
-          selectedColor,
-          textMarkupAnnotationType:
-              isHighlight
-                  ? PdfTextMarkupAnnotationType.highlight
-                  : PdfTextMarkupAnnotationType.underline,
-        );
-        pdfAnnotations.add(annotation);
-      }
+  //     for (var line in textLines) {
+  //       PdfTextMarkupAnnotation annotation = PdfTextMarkupAnnotation(
+  //         line.bounds,
+  //         line.text,
+  //         selectedColor,
+  //         textMarkupAnnotationType:
+  //             isHighlight
+  //                 ? PdfTextMarkupAnnotationType.highlight
+  //                 : PdfTextMarkupAnnotationType.underline,
+  //       );
+  //       pdfAnnotations.add(annotation);
+  //     }
 
-      // Create an annotation to display on the PDF viewer
-      Annotation displayAnnotation;
-      if (isHighlight) {
-        displayAnnotation = HighlightAnnotation(
-          textBoundsCollection: textLines,
-        );
-      } else {
-        displayAnnotation = UnderlineAnnotation(
-          textBoundsCollection: textLines,
-        );
-      }
+  //     // Create an annotation to display on the PDF viewer
+  //     Annotation displayAnnotation;
+  //     if (isHighlight) {
+  //       displayAnnotation = HighlightAnnotation(
+  //         textBoundsCollection: textLines,
+  //       );
+  //     } else {
+  //       displayAnnotation = UnderlineAnnotation(
+  //         textBoundsCollection: textLines,
+  //       );
+  //     }
 
-      _pdfViewerController.addAnnotation(displayAnnotation);
+  //     _pdfViewerController.addAnnotation(displayAnnotation);
 
-      // // Add the annotation to the appropriate controller (highlight or underline)
-      // isHighlight
-      //     ? _highlightController.addAnnotation(
-      //       AnnotationAction(
-      //         displayAnnotation,
-      //         isHighlight ? AnnotationType.highlight : AnnotationType.underline,
-      //         pdfAnnotations,
-      //         isAdd: true,
-      //       ),
-      //     )
-      //     : _underlineController.addAnnotation(
-      //       AnnotationAction(
-      //         displayAnnotation,
-      //         isHighlight ? AnnotationType.highlight : AnnotationType.underline,
-      //         pdfAnnotations,
-      //         isAdd: true,
-      //       ),
-      //     );
-    }
-  }
+  //     // // Add the annotation to the appropriate controller (highlight or underline)
+  //     // isHighlight
+  //     //     ? _highlightController.addAnnotation(
+  //     //       AnnotationAction(
+  //     //         displayAnnotation,
+  //     //         isHighlight ? AnnotationType.highlight : AnnotationType.underline,
+  //     //         pdfAnnotations,
+  //     //         isAdd: true,
+  //     //       ),
+  //     //     )
+  //     //     : _underlineController.addAnnotation(
+  //     //       AnnotationAction(
+  //     //         displayAnnotation,
+  //     //         isHighlight ? AnnotationType.highlight : AnnotationType.underline,
+  //     //         pdfAnnotations,
+  //     //         isAdd: true,
+  //     //       ),
+  //     //     );
+  //   }
+  // }
 
-  /// Adds an image to the PDF by picking an image from the gallery.
-  Future<void> _addImage() async {
-    final pickedFile = await ImagePicker().pickImage(
-      source: ImageSource.gallery,
-    );
+  // /// Adds an image to the PDF by picking an image from the gallery.
+  // Future<void> _addImage() async {
+  //   final pickedFile = await ImagePicker().pickImage(
+  //     source: ImageSource.gallery,
+  //   );
 
-    if (pickedFile != null) {
-      final bytes = await pickedFile.readAsBytes();
+  //   if (pickedFile != null) {
+  //     final bytes = await pickedFile.readAsBytes();
 
-      // Check if the image size is greater than 100 KB
-      Uint8List compressedBytes = bytes;
-      if (bytes.lengthInBytes > 200 * 1024) {
-        compressedBytes = await _compressImage(bytes);
-      }
+  //     // Check if the image size is greater than 100 KB
+  //     Uint8List compressedBytes = bytes;
+  //     if (bytes.lengthInBytes > 200 * 1024) {
+  //       compressedBytes = await _compressImage(bytes);
+  //     }
 
-      final codec = await ui.instantiateImageCodec(compressedBytes);
-      final frame = await codec.getNextFrame();
-      //  final ui.Image image = frame.image;
+  //     final codec = await ui.instantiateImageCodec(compressedBytes);
+  //     final frame = await codec.getNextFrame();
+  //     //  final ui.Image image = frame.image;
 
-      //  _imageController.addImage(image);
-      setState(() {});
-    }
-  }
+  //     //  _imageController.addImage(image);
+  //     setState(() {});
+  //   }
+  // }
 
-  // ✅ Image compression function to resize and reduce the size of images before adding to the PDF.
-  Future<Uint8List> _compressImage(Uint8List bytes) async {
-    // Instantiate image codec with target width of 800px to resize the image
-    final codec = await ui.instantiateImageCodec(
-      bytes,
-      targetWidth: 800, // Resize to reduce size
-    );
-    final frame = await codec.getNextFrame();
-    final ui.Image image = frame.image;
+  // // ✅ Image compression function to resize and reduce the size of images before adding to the PDF.
+  // Future<Uint8List> _compressImage(Uint8List bytes) async {
+  //   // Instantiate image codec with target width of 800px to resize the image
+  //   final codec = await ui.instantiateImageCodec(
+  //     bytes,
+  //     targetWidth: 800, // Resize to reduce size
+  //   );
+  //   final frame = await codec.getNextFrame();
+  //   final ui.Image image = frame.image;
 
-    // Convert image to ByteData and then to Uint8List to return compressed image
-    final ByteData? byteData = await image.toByteData(
-      format: ui.ImageByteFormat.png,
-    );
-    return byteData!.buffer.asUint8List();
-  }
+  //   // Convert image to ByteData and then to Uint8List to return compressed image
+  //   final ByteData? byteData = await image.toByteData(
+  //     format: ui.ImageByteFormat.png,
+  //   );
+  //   return byteData!.buffer.asUint8List();
+  // }
 
   // Get the content to display in the app bar based on the selected index.
   Widget getAppBarContent() {
@@ -477,116 +477,116 @@ class _OPdfEditScreenState extends State<NGPdfEditScreen> {
     setState(() {}); // Update the UI
   }
 
-  // Show a dialog to allow the user to choose where to add a new page.
-  void _showAddPageOptions(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // Header with title and icon
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    Text(
-                      'Add blank Page',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
-                      ),
-                    ),
-                    Icon(Icons.edit_document, color: Colors.amber, size: 24),
-                  ],
-                ),
-                const Divider(height: 20, thickness: 1),
+  // // Show a dialog to allow the user to choose where to add a new page.
+  // void _showAddPageOptions(BuildContext context) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) {
+  //       return Dialog(
+  //         shape: RoundedRectangleBorder(
+  //           borderRadius: BorderRadius.circular(16),
+  //         ),
+  //         child: Container(
+  //           padding: const EdgeInsets.all(16),
+  //           decoration: BoxDecoration(
+  //             color: Colors.white,
+  //             borderRadius: BorderRadius.circular(16),
+  //           ),
+  //           child: Column(
+  //             mainAxisSize: MainAxisSize.min,
+  //             children: [
+  //               // Header with title and icon
+  //               Row(
+  //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                 children: const [
+  //                   Text(
+  //                     'Add blank Page',
+  //                     style: TextStyle(
+  //                       fontSize: 18,
+  //                       fontWeight: FontWeight.bold,
+  //                       color: Colors.black87,
+  //                     ),
+  //                   ),
+  //                   Icon(Icons.edit_document, color: Colors.amber, size: 24),
+  //                 ],
+  //               ),
+  //               const Divider(height: 20, thickness: 1),
 
-                // Option to add a page before the current page
-                ListTile(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-                  leading: Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: Colors.green.withOpacity(0.2),
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(Icons.arrow_upward, color: Colors.green),
-                  ),
-                  title: Text(
-                    'Add at Page no. $_currentPage',
-                    style: TextStyle(fontWeight: FontWeight.w500),
-                  ),
-                  onTap: () {
-                    Navigator.pop(context);
-                    addPageAt(
-                      _currentPage - 1,
-                    ); // Add page before the current page
-                  },
-                ),
+  //               // Option to add a page before the current page
+  //               ListTile(
+  //                 contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+  //                 leading: Container(
+  //                   padding: const EdgeInsets.all(8),
+  //                   decoration: BoxDecoration(
+  //                     color: Colors.green.withOpacity(0.2),
+  //                     shape: BoxShape.circle,
+  //                   ),
+  //                   child: const Icon(Icons.arrow_upward, color: Colors.green),
+  //                 ),
+  //                 title: Text(
+  //                   'Add at Page no. $_currentPage',
+  //                   style: TextStyle(fontWeight: FontWeight.w500),
+  //                 ),
+  //                 onTap: () {
+  //                   Navigator.pop(context);
+  //                   addPageAt(
+  //                     _currentPage - 1,
+  //                   ); // Add page before the current page
+  //                 },
+  //               ),
 
-                // Option to add a page after the current page
-                ListTile(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-                  leading: Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: Colors.blue.withOpacity(0.2),
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(Icons.arrow_forward, color: Colors.blue),
-                  ),
-                  title: Text(
-                    'Add at Page no. ${_currentPage + 1}',
-                    style: TextStyle(fontWeight: FontWeight.w500),
-                  ),
-                  onTap: () {
-                    Navigator.pop(context);
-                    addPageAt(_currentPage); // Add page after the current page
-                  },
-                ),
+  //               // Option to add a page after the current page
+  //               ListTile(
+  //                 contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+  //                 leading: Container(
+  //                   padding: const EdgeInsets.all(8),
+  //                   decoration: BoxDecoration(
+  //                     color: Colors.blue.withOpacity(0.2),
+  //                     shape: BoxShape.circle,
+  //                   ),
+  //                   child: const Icon(Icons.arrow_forward, color: Colors.blue),
+  //                 ),
+  //                 title: Text(
+  //                   'Add at Page no. ${_currentPage + 1}',
+  //                   style: TextStyle(fontWeight: FontWeight.w500),
+  //                 ),
+  //                 onTap: () {
+  //                   Navigator.pop(context);
+  //                   addPageAt(_currentPage); // Add page after the current page
+  //                 },
+  //               ),
 
-                const SizedBox(height: 8),
+  //               const SizedBox(height: 8),
 
-                // Cancel Button
-                TextButton.icon(
-                  onPressed: () => Navigator.pop(context),
-                  icon: const Icon(Icons.close, color: Colors.red),
-                  label: const Text(
-                    'Cancel',
-                    style: TextStyle(
-                      color: Colors.red,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  style: TextButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 12,
-                      horizontal: 16,
-                    ),
-                    backgroundColor: Colors.red.withOpacity(0.1),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
+  //               // Cancel Button
+  //               TextButton.icon(
+  //                 onPressed: () => Navigator.pop(context),
+  //                 icon: const Icon(Icons.close, color: Colors.red),
+  //                 label: const Text(
+  //                   'Cancel',
+  //                   style: TextStyle(
+  //                     color: Colors.red,
+  //                     fontWeight: FontWeight.w500,
+  //                   ),
+  //                 ),
+  //                 style: TextButton.styleFrom(
+  //                   padding: const EdgeInsets.symmetric(
+  //                     vertical: 12,
+  //                     horizontal: 16,
+  //                   ),
+  //                   backgroundColor: Colors.red.withOpacity(0.1),
+  //                   shape: RoundedRectangleBorder(
+  //                     borderRadius: BorderRadius.circular(12),
+  //                   ),
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 
   // Show confirmation dialog before removing a page.
   Future _showRemovePageConfirmation(
@@ -1325,15 +1325,15 @@ class _OPdfEditScreenState extends State<NGPdfEditScreen> {
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        // Previous Button (hidden by default)
-        _buildUndoRedoButton(
-          icon: Icons.add_circle_outline, // Icon for add page button
-          enabled: true, // Button is enabled
-          onPressed: () {
-            _showAddPageOptions(context); // Show options to add a new page
-          },
-          text: "Add Page", // Text for the button
-        ),
+        // // Previous Button (hidden by default)
+        // _buildUndoRedoButton(
+        //   icon: Icons.add_circle_outline, // Icon for add page button
+        //   enabled: true, // Button is enabled
+        //   onPressed: () {
+        //     _showAddPageOptions(context); // Show options to add a new page
+        //   },
+        //   text: "Add Page", // Text for the button
+        // ),
         _buildUndoRedoButton(
           icon: Icons.check, // Icon for done button
           enabled: true, // Button is enabled
