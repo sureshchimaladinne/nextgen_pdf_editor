@@ -1056,21 +1056,21 @@ class _OPdfEditScreenState extends State<NGPdfEditScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     // Show bottom navigation items conditionally
-                    if (widget.draw) _buildBottomNavItem(Icons.edit, "Draw", 0),
-                    if (widget.text)
-                      _buildBottomNavItem(Icons.text_fields, "Text", 1),
-                    if (widget.highlight)
-                      _buildBottomNavItem(Icons.highlight, "Highlight", 2),
-                    if (widget.underline)
-                      _buildBottomNavItem(
-                        Icons.format_underline,
-                        "Underline",
-                        3,
-                      ),
-                    if (widget.image)
-                      _buildBottomNavItem(Icons.image_outlined, "Image", 4),
-                    if (widget.page)
-                      _buildBottomNavItem(Icons.edit_document, "Page", 5),
+                    //if (widget.draw) _buildBottomNavItem(Icons.edit, "Draw", 0),
+                    // if (widget.text)
+                    _buildBottomNavItem(Icons.text_fields, "Text", 1),
+                    // if (widget.highlight)
+                    //   _buildBottomNavItem(Icons.highlight, "Highlight", 2),
+                    // if (widget.underline)
+                    //   _buildBottomNavItem(
+                    //     Icons.format_underline,
+                    //     "Underline",
+                    //     3,
+                    //   ),
+                    // if (widget.image)
+                    //   _buildBottomNavItem(Icons.image_outlined, "Image", 4),
+                    // if (widget.page)
+                    //   _buildBottomNavItem(Icons.edit_document, "Page", 5),
                   ],
                 ),
               ),
@@ -1399,9 +1399,9 @@ class _OPdfEditScreenState extends State<NGPdfEditScreen> {
               // case 4:
               //   _changeMode(DrawingMode.image); // Set mode to image
               //   break;
-              case 1:
-                _changeMode(DrawingMode.edit); // Set mode to edit
-                break;
+              // case 1:
+              //   _changeMode(DrawingMode.edit); // Set mode to edit
+              //   break;
               default:
                 _changeMode(DrawingMode.none); // Set mode to none
                 break;
