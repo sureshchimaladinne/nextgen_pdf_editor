@@ -2449,122 +2449,122 @@ class _OPdfEditScreenState extends State<NGPdfEditScreen> {
     );
   }
 
-  // Helper function to build option row for undo, redo, add, etc.
-  Widget buildOptionRow({
-    required dynamic controller,
-    required VoidCallback onAdd,
-    required IconData addIcon,
-    required String label,
-    Color centerBtnColor = Colors.transparent,
-    PdfViewerController? pdfController,
-  }) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
-      decoration: BoxDecoration(color: Colors.black, border: Border()),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          _buildActionButton(
-            onPressed: onAdd,
-            icon: addIcon,
-            label: label,
-            centerBtnColor: centerBtnColor,
-          ),
-          _buildUndoRedoButton(
-            icon: Icons.check,
-            enabled: true,
-            onPressed: () {
-              setState(() {
-                _selectedIndex = -1;
-                _changeMode(DrawingMode.none);
-              });
-            },
-            text: "Done",
-          ),
-        ],
-      ),
-    );
-  }
+  // // Helper function to build option row for undo, redo, add, etc.
+  // Widget buildOptionRow({
+  //   required dynamic controller,
+  //   required VoidCallback onAdd,
+  //   required IconData addIcon,
+  //   required String label,
+  //   Color centerBtnColor = Colors.transparent,
+  //   PdfViewerController? pdfController,
+  // }) {
+  //   return Container(
+  //     padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
+  //     decoration: BoxDecoration(color: Colors.black, border: Border()),
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //       children: [
+  //         _buildActionButton(
+  //           onPressed: onAdd,
+  //           icon: addIcon,
+  //           label: label,
+  //           centerBtnColor: centerBtnColor,
+  //         ),
+  //         _buildUndoRedoButton(
+  //           icon: Icons.check,
+  //           enabled: true,
+  //           onPressed: () {
+  //             setState(() {
+  //               _selectedIndex = -1;
+  //               _changeMode(DrawingMode.none);
+  //             });
+  //           },
+  //           text: "Done",
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
-  // Reusable Undo/Redo Button widget
-  Widget _buildUndoRedoButton({
-    required IconData icon,
-    required bool enabled,
-    required VoidCallback? onPressed,
-    String text = '',
-  }) {
-    return GestureDetector(
-      onTap: onPressed,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon, color: enabled ? Colors.white : Colors.grey[700]),
+  // // Reusable Undo/Redo Button widget
+  // Widget _buildUndoRedoButton({
+  //   required IconData icon,
+  //   required bool enabled,
+  //   required VoidCallback? onPressed,
+  //   String text = '',
+  // }) {
+  //   return GestureDetector(
+  //     onTap: onPressed,
+  //     child: Padding(
+  //       padding: const EdgeInsets.symmetric(horizontal: 8.0),
+  //       child: Column(
+  //         mainAxisSize: MainAxisSize.min,
+  //         children: [
+  //           Icon(icon, color: enabled ? Colors.white : Colors.grey[700]),
 
-            Text(
-              text,
-              style: TextStyle(
-                color: enabled ? Colors.white : Colors.grey[700],
-                fontSize: 10,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  //           Text(
+  //             text,
+  //             style: TextStyle(
+  //               color: enabled ? Colors.white : Colors.grey[700],
+  //               fontSize: 10,
+  //             ),
+  //           ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 
-  // ✅ Reusable Action Button (Add Drawing, Text, Highlight, etc.)
-  /// A reusable button widget used for adding drawing, text, highlight, etc.
-  Widget _buildActionButton({
-    required VoidCallback onPressed, // Action when button is pressed
-    required IconData icon, // Icon to display on button
-    required String label, // Label text for the button
-    Color centerBtnColor =
-        Colors
-            .transparent, // Color for the button's center, default is transparent
-  }) {
-    return Container(
-      decoration: BoxDecoration(
-        color: centerBtnColor, // Sets the color of the button's center
-        borderRadius: BorderRadius.circular(20), // Rounded corners
-        border: Border.all(color: Colors.white), // White border around button
-      ),
-      child: IconButton(
-        icon: Icon(
-          icon,
-          color: Colors.white,
-          size: 25,
-        ), // Icon with white color and size
-        onPressed: onPressed, // Action to perform when button is pressed
-      ),
-    );
-  }
+  // // ✅ Reusable Action Button (Add Drawing, Text, Highlight, etc.)
+  // /// A reusable button widget used for adding drawing, text, highlight, etc.
+  // Widget _buildActionButton({
+  //   required VoidCallback onPressed, // Action when button is pressed
+  //   required IconData icon, // Icon to display on button
+  //   required String label, // Label text for the button
+  //   Color centerBtnColor =
+  //       Colors
+  //           .transparent, // Color for the button's center, default is transparent
+  // }) {
+  //   return Container(
+  //     decoration: BoxDecoration(
+  //       color: centerBtnColor, // Sets the color of the button's center
+  //       borderRadius: BorderRadius.circular(20), // Rounded corners
+  //       border: Border.all(color: Colors.white), // White border around button
+  //     ),
+  //     child: IconButton(
+  //       icon: Icon(
+  //         icon,
+  //         color: Colors.white,
+  //         size: 25,
+  //       ), // Icon with white color and size
+  //       onPressed: onPressed, // Action to perform when button is pressed
+  //     ),
+  //   );
+  // }
 
-  /// Option to add text to the PDF.
-  Widget textOption() => buildOptionRow(
-    controller: _textBoxController,
-    onAdd: () async {
-      var textBox = _textBoxController.addTextBox(); // Add a new text box
-      if (textBox == null) return; // If no text box is added, return
-      Map<String, dynamic>? result = await showTextEditDialog(
-        context,
-        textBox,
-      ); // Show text editing dialog
+  // /// Option to add text to the PDF.
+  // Widget textOption() => buildOptionRow(
+  //   controller: _textBoxController,
+  //   onAdd: () async {
+  //     var textBox = _textBoxController.addTextBox(); // Add a new text box
+  //     if (textBox == null) return; // If no text box is added, return
+  //     Map<String, dynamic>? result = await showTextEditDialog(
+  //       context,
+  //       textBox,
+  //     ); // Show text editing dialog
 
-      if (result != null) {
-        // If a result is returned, update the text box properties
-        setState(() {
-          textBox.text = result["text"] as String;
-          textBox.fontSize = result["fontSize"] as double;
-          textBox.color = result["color"] as Color;
-        });
-      }
-    },
-    addIcon: Icons.text_fields, // Icon for text option
-    label: "Add Text", // Label for the option
-  );
+  //     if (result != null) {
+  //       // If a result is returned, update the text box properties
+  //       setState(() {
+  //         textBox.text = result["text"] as String;
+  //         textBox.fontSize = result["fontSize"] as double;
+  //         textBox.color = result["color"] as Color;
+  //       });
+  //     }
+  //   },
+  //   addIcon: Icons.text_fields, // Icon for text option
+  //   label: "Add Text", // Label for the option
+  // );
 
   // // ✅ Edit Page Option
   // /// Option to edit the page (Add, Done, or Remove Page).
@@ -2607,70 +2607,70 @@ class _OPdfEditScreenState extends State<NGPdfEditScreen> {
   //   ),
   // );
 
-  // Helper function to change drawing mode
-  void _changeMode(DrawingMode mode) {
-    setState(() {
-      selectedMode = mode; // Change the drawing mode
-    });
-  }
+  // // Helper function to change drawing mode
+  // void _changeMode(DrawingMode mode) {
+  //   setState(() {
+  //     selectedMode = mode; // Change the drawing mode
+  //   });
+  // }
 
-  Widget _buildBottomNavItem(IconData icon, String label, int index) {
-    final bool isSelected =
-        _selectedIndex == index; // Check if the item is selected
+  // Widget _buildBottomNavItem(IconData icon, String label, int index) {
+  //   final bool isSelected =
+  //       _selectedIndex == index; // Check if the item is selected
 
-    return Expanded(
-      child: GestureDetector(
-        onTap: () {
-          setState(() {
-            if (isSelected) {
-              _selectedIndex = -1; // Deselect if already selected
-            } else {
-              _selectedIndex = index; // Select the current item
-            }
-            switch (index) {
-              case 0:
-                _changeMode(DrawingMode.text); // Set mode to text
-                break;
-              default:
-                _changeMode(DrawingMode.none); // Set mode to none
-                break;
-            }
-          });
-        },
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 5.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                icon,
-                color:
-                    isSelected
-                        ? Colors.white
-                        : Colors.grey, // Change color when selected
-                size: isSelected ? 26 : 20, // Change size when selected
-              ),
-              Text(
-                label,
-                style: TextStyle(
-                  color:
-                      isSelected
-                          ? Colors.white
-                          : Colors.grey, // Change text color when selected
-                  fontSize: 10,
-                  fontWeight:
-                      isSelected
-                          ? FontWeight.bold
-                          : FontWeight
-                              .normal, // Change text weight when selected
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+  //   return Expanded(
+  //     child: GestureDetector(
+  //       onTap: () {
+  //         setState(() {
+  //           if (isSelected) {
+  //             _selectedIndex = -1; // Deselect if already selected
+  //           } else {
+  //             _selectedIndex = index; // Select the current item
+  //           }
+  //           switch (index) {
+  //             case 0:
+  //               _changeMode(DrawingMode.text); // Set mode to text
+  //               break;
+  //             default:
+  //               _changeMode(DrawingMode.none); // Set mode to none
+  //               break;
+  //           }
+  //         });
+  //       },
+  //       child: Padding(
+  //         padding: const EdgeInsets.symmetric(vertical: 5.0),
+  //         child: Column(
+  //           mainAxisSize: MainAxisSize.min,
+  //           children: [
+  //             Icon(
+  //               icon,
+  //               color:
+  //                   isSelected
+  //                       ? Colors.white
+  //                       : Colors.grey, // Change color when selected
+  //               size: isSelected ? 26 : 20, // Change size when selected
+  //             ),
+  //             Text(
+  //               label,
+  //               style: TextStyle(
+  //                 color:
+  //                     isSelected
+  //                         ? Colors.white
+  //                         : Colors.grey, // Change text color when selected
+  //                 fontSize: 10,
+  //                 fontWeight:
+  //                     isSelected
+  //                         ? FontWeight.bold
+  //                         : FontWeight
+  //                             .normal, // Change text weight when selected
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 }
 
 /// Enum representing the different drawing modes for the canvas
