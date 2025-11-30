@@ -2000,78 +2000,78 @@ class _OPdfEditScreenState extends State<NGPdfEditScreen> {
     setState(() {}); // Update the UI
   }
 
-  // Show confirmation dialog before removing a page.
-  Future _showRemovePageConfirmation(
-    BuildContext context, {
-    int pageNumber = 1,
-  }) async {
-    return showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-          title: Row(
-            children: [
-              // Icon indicating removal
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Colors.red.withOpacity(0.2),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.delete_forever,
-                  color: Colors.red,
-                  size: 24,
-                ),
-              ),
-              const SizedBox(width: 12),
-              const Text(
-                'Confirm Remove',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-          content: Text(
-            'Are you sure you want to remove Page no.$pageNumber?\n(this action can not be undone/reset)',
-            style: const TextStyle(fontSize: 14, color: Colors.black87),
-          ),
-          actionsAlignment: MainAxisAlignment.spaceEvenly,
-          actions: [
-            // ❌ Cancel Button
-            TextButton.icon(
-              onPressed: () => Navigator.pop(context, false),
-              icon: const Icon(Icons.close, color: Colors.blue, size: 18),
-              label: const Text('Cancel', style: TextStyle(color: Colors.blue)),
-              style: TextButton.styleFrom(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 8,
-                ),
-              ),
-            ),
-            // ✅ Remove Button
-            TextButton.icon(
-              onPressed: () {
-                Navigator.pop(context);
-                removePageAt(_currentPage); // Proceed with page removal
-              },
-              icon: const Icon(Icons.delete, color: Colors.red, size: 18),
-              label: const Text('Remove', style: TextStyle(color: Colors.red)),
-              style: TextButton.styleFrom(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 8,
-                ),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
+  // // Show confirmation dialog before removing a page.
+  // Future _showRemovePageConfirmation(
+  //   BuildContext context, {
+  //   int pageNumber = 1,
+  // }) async {
+  //   return showDialog(
+  //     context: context,
+  //     builder: (context) {
+  //       return AlertDialog(
+  //         shape: RoundedRectangleBorder(
+  //           borderRadius: BorderRadius.circular(16),
+  //         ),
+  //         title: Row(
+  //           children: [
+  //             // Icon indicating removal
+  //             Container(
+  //               padding: const EdgeInsets.all(8),
+  //               decoration: BoxDecoration(
+  //                 color: Colors.red.withOpacity(0.2),
+  //                 shape: BoxShape.circle,
+  //               ),
+  //               child: const Icon(
+  //                 Icons.delete_forever,
+  //                 color: Colors.red,
+  //                 size: 24,
+  //               ),
+  //             ),
+  //             const SizedBox(width: 12),
+  //             const Text(
+  //               'Confirm Remove',
+  //               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+  //             ),
+  //           ],
+  //         ),
+  //         content: Text(
+  //           'Are you sure you want to remove Page no.$pageNumber?\n(this action can not be undone/reset)',
+  //           style: const TextStyle(fontSize: 14, color: Colors.black87),
+  //         ),
+  //         actionsAlignment: MainAxisAlignment.spaceEvenly,
+  //         actions: [
+  //           // ❌ Cancel Button
+  //           TextButton.icon(
+  //             onPressed: () => Navigator.pop(context, false),
+  //             icon: const Icon(Icons.close, color: Colors.blue, size: 18),
+  //             label: const Text('Cancel', style: TextStyle(color: Colors.blue)),
+  //             style: TextButton.styleFrom(
+  //               padding: const EdgeInsets.symmetric(
+  //                 horizontal: 12,
+  //                 vertical: 8,
+  //               ),
+  //             ),
+  //           ),
+  //           // ✅ Remove Button
+  //           TextButton.icon(
+  //             onPressed: () {
+  //               Navigator.pop(context);
+  //               removePageAt(_currentPage); // Proceed with page removal
+  //             },
+  //             icon: const Icon(Icons.delete, color: Colors.red, size: 18),
+  //             label: const Text('Remove', style: TextStyle(color: Colors.red)),
+  //             style: TextButton.styleFrom(
+  //               padding: const EdgeInsets.symmetric(
+  //                 horizontal: 12,
+  //                 vertical: 8,
+  //               ),
+  //             ),
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
