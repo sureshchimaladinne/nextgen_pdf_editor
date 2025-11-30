@@ -12,12 +12,12 @@ class NGPdf {
   static Future<File?> openEditor(
     BuildContext context,
     File pdfFile, {
-    bool draw = true,
+    //  bool draw = true,
     bool text = true,
-    bool highlight = true,
-    bool underline = true,
-    bool image = true,
-    bool page = true,
+    // bool highlight = true,
+    // bool underline = true,
+    // bool image = true,
+    // bool page = true,
   }) async {
     // Navigate to the PDF editor screen and wait for the result
     File? result = await Navigator.push(

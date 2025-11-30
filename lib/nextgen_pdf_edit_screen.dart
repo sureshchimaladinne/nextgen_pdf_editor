@@ -1861,19 +1861,19 @@ class _OPdfEditScreenState extends State<NGPdfEditScreen> {
     Navigator.pop(context, file);
   }
 
-  // Get the content to display in the app bar based on the selected index.
-  Widget getAppBarContent() {
-    // Determine which option to display based on the selected index
-    switch (_selectedIndex) {
-      case 0:
-        return textOption();
+  // // Get the content to display in the app bar based on the selected index.
+  // Widget getAppBarContent() {
+  //   // Determine which option to display based on the selected index
+  //   switch (_selectedIndex) {
+  //     case 0:
+  //       return textOption();
 
-      case 1:
-        return editPage(); // Page editing option
-      default:
-        return Container(); // Default empty container if no option is selected
-    }
-  }
+  //     case 1:
+  //       return editPage(); // Page editing option
+  //     default:
+  //       return Container(); // Default empty container if no option is selected
+  //   }
+  // }
 
   // Reset all changes made to the document across all pages.
   Future<void> _resetAllChanges(BuildContext context) async {
@@ -2566,46 +2566,46 @@ class _OPdfEditScreenState extends State<NGPdfEditScreen> {
     label: "Add Text", // Label for the option
   );
 
-  // ✅ Edit Page Option
-  /// Option to edit the page (Add, Done, or Remove Page).
-  Widget editPage() => Container(
-    padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
-    decoration: BoxDecoration(
-      color: Colors.black,
-      border: Border(
-        top: BorderSide(color: Colors.grey[900]!),
-        bottom: BorderSide(color: Colors.grey[900]!),
-      ),
-    ),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        _buildUndoRedoButton(
-          icon: Icons.check, // Icon for done button
-          enabled: true, // Button is enabled
-          onPressed: () {
-            setState(() {
-              _selectedIndex = -1; // Reset selected index
-              _changeMode(DrawingMode.none); // Reset to no drawing mode
-            });
-          },
-          text: "Done", // Text for the button
-        ),
-        _buildUndoRedoButton(
-          icon:
-              Icons
-                  .remove_circle_outline_outlined, // Icon for remove page button
-          enabled: true, // Button is enabled
-          onPressed: () {
-            _showRemovePageConfirmation(
-              context,
-            ); // Show confirmation for page removal
-          },
-          text: "Remove Page", // Text for the button
-        ),
-      ],
-    ),
-  );
+  // // ✅ Edit Page Option
+  // /// Option to edit the page (Add, Done, or Remove Page).
+  // Widget editPage() => Container(
+  //   padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
+  //   decoration: BoxDecoration(
+  //     color: Colors.black,
+  //     border: Border(
+  //       top: BorderSide(color: Colors.grey[900]!),
+  //       bottom: BorderSide(color: Colors.grey[900]!),
+  //     ),
+  //   ),
+  //   child: Row(
+  //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //     children: [
+  //       _buildUndoRedoButton(
+  //         icon: Icons.check, // Icon for done button
+  //         enabled: true, // Button is enabled
+  //         onPressed: () {
+  //           setState(() {
+  //             _selectedIndex = -1; // Reset selected index
+  //             _changeMode(DrawingMode.none); // Reset to no drawing mode
+  //           });
+  //         },
+  //         text: "Done", // Text for the button
+  //       ),
+  //       _buildUndoRedoButton(
+  //         icon:
+  //             Icons
+  //                 .remove_circle_outline_outlined, // Icon for remove page button
+  //         enabled: true, // Button is enabled
+  //         onPressed: () {
+  //           _showRemovePageConfirmation(
+  //             context,
+  //           ); // Show confirmation for page removal
+  //         },
+  //         text: "Remove Page", // Text for the button
+  //       ),
+  //     ],
+  //   ),
+  // );
 
   // Helper function to change drawing mode
   void _changeMode(DrawingMode mode) {

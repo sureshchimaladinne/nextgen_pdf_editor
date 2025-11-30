@@ -5,7 +5,7 @@
   "packages": [
     {
       "name": "nextgen_pdf_editor",
-      "version": "1.2.2",
+      "version": "1.2.3",
       "dependencies": [
         "flutter",
         "flutter_colorpicker",
